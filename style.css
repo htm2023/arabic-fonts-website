@@ -1,0 +1,387 @@
+@font-face {
+    font-family: 'ThuluthClassic';
+    src: url('fonts/DTHULUTH-II-1.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Thuluth';
+    src: url('fonts/DTHULUTH-II-1.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'AmoshrefThuluth';
+    src: url('fonts/ttf1/amoshref-thulth.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'DecotypeThuluthII';
+    src: url('fonts/ttf4/DecoType Thuluth II Regular/DecoType Thuluth II Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'DecotypeThuluthIII';
+    src: url('fonts/ttf6/decotype-thuluth-iii.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'GEThuluthLight';
+    src: url('fonts/ttf3/GE Thuluth Light/GE Thuluth Light.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'JassminTypo';
+    src: url('fonts/ttf5/jassmin-typo.ttf') format('truetype');
+}
+
+/* ===== الأساسيات ===== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #f5f3ef;
+    margin: 0;
+    padding: 30px 15px;
+    font-family: 'Reem Kufi', sans-serif;
+    color: #111;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+    text-align: center;
+    margin: 0 0 5px;
+    font-size: 2rem;
+}
+
+.subtitle {
+    text-align: center;
+    color: #666;
+    margin: 0 0 25px;
+    font-size: 1rem;
+}
+
+/* ===== مربع الكتابة ===== */
+.input-section {
+    margin-bottom: 15px;
+}
+.input-section label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+.input-section textarea {
+    width: 100%;
+    min-height: 90px;
+    padding: 12px;
+    font-size: 1.1rem;
+    font-family: 'Amiri', serif;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: vertical;
+    direction: rtl;
+}
+
+/* ===== شريط التشكيل ===== */
+.tashkeel-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: #f9f8f6;
+    border-radius: 8px;
+}
+.bar-label {
+    width: 100%;
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+.tashkeel-bar button {
+    padding: 6px 12px;
+    font-size: 1rem;
+    font-family: 'Amiri', serif;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.tashkeel-bar button:hover {
+    background: #eee;
+}
+
+/* ===== أدوات التحكم ===== */
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #f9f8f6;
+    border-radius: 8px;
+}
+.controls label {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+.controls select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-family: 'Reem Kufi', sans-serif;
+}
+.controls input[type="range"] {
+    flex: 1;
+    min-width: 120px;
+}
+#sizeValue {
+    font-size: 0.9rem;
+    color: #555;
+    min-width: 45px;
+}
+
+/* ===== منطقة العرض ===== */
+.output-section {
+    text-align: center;
+    padding: 30px 15px;
+    background: #fafafa;
+    border-radius: 12px;
+    border: 1px solid #eee;
+}
+.thuluth-text {
+    font-family: 'ThuluthClassic', serif;
+    line-height: 1.8;
+    word-break: break-word;
+    color: #111;
+}
+
+/* ===== حروف بأشكال بديلة قابلة للتبديل (متاح مع خط ثلث أموشرف) ===== */
+.thuluth-text .alt-letter {
+    cursor: pointer;
+    border-bottom: 1px dotted rgba(0, 0, 0, 0.35);
+}
+.thuluth-text .alt-letter:hover {
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 4px;
+}
+.thuluth-text .alt-letter.alt-active {
+    font-feature-settings: "ss01" 1;
+    border-bottom-color: rgba(200, 0, 0, 0.5);
+}
+.alt-hint {
+    display: none;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* ===== الأزرار العامة (نسخ / تصدير) ===== */
+.copy-btn {
+    padding: 8px 20px;
+    margin-top: 15px;
+    font-size: 1rem;
+    background: #222;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.copy-btn:hover {
+    background: #444;
+}
+.copy-btn:disabled {
+    background: #999;
+    cursor: not-allowed;
+}
+
+.copy-msg {
+    display: block;
+    margin-top: 8px;
+    text-align: center;
+    color: green;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.copy-msg.show {
+    opacity: 1;
+}
+
+.action-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.export-quality {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+}
+.export-quality label {
+    font-weight: bold;
+}
+.export-quality select {
+    padding: 5px 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-family: 'Reem Kufi', sans-serif;
+}
+
+/* ===== قسم استخراج النص من صورة (OCR) ===== */
+.ocr-section {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+}
+.ocr-title {
+    font-family: 'Reem Kufi', sans-serif;
+    margin-bottom: 15px;
+}
+.ocr-input {
+    margin-bottom: 10px;
+    display: block;
+    margin-inline: auto;
+}
+.ocr-status {
+    margin: 10px 0;
+    color: #555;
+    font-size: 0.9rem;
+}
+.ocr-result {
+    width: 100%;
+    max-width: 500px;
+    min-height: 100px;
+    padding: 10px;
+    font-size: 1.2rem;
+    font-family: 'Reem Kufi', sans-serif;
+    text-align: right;
+    direction: rtl;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    display: block;
+    margin-inline: auto;
+}
+.image-preview {
+    display: block;
+    max-width: 100%;
+    max-height: 300px;
+    margin: 15px auto;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* ===== محرر تصميم الحروف الحر ===== */
+.vector-editor-section {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+}
+.vector-editor-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+.vector-editor-controls label {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+.vector-editor-controls select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+.vector-editor-canvas-wrap {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+#vectorEditorSvg {
+    width: 100%;
+    max-width: 480px;
+    height: 380px;
+    overflow: visible;
+    touch-action: none;
+}
+#vectorEditorSvg .vector-path {
+    fill: #000;
+    stroke: none;
+}
+#vectorEditorSvg .vector-handle {
+    fill: #fff2cc;
+    stroke: #0066ff;
+    stroke-width: 2;
+    cursor: grab;
+}
+#vectorEditorSvg .vector-handle:active {
+    cursor: grabbing;
+    fill: #0066ff;
+}
+
+/* ===== قسم تحليل نوع الخط ===== */
+.font-match-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed #ddd;
+}
+.font-match-results {
+    list-style: none;
+    margin: 15px auto 0;
+    padding: 0;
+    max-width: 500px;
+    text-align: right;
+    direction: rtl;
+}
+.font-match-results li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    background: #f9f8f6;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+.font-match-results li.top-match {
+    border-color: #222;
+    background: #f2f2f2;
+}
+.font-match-name {
+    font-weight: bold;
+}
+.font-match-score {
+    color: #666;
+    font-size: 0.9rem;
+}
+.font-match-use-btn {
+    padding: 4px 12px;
+    margin: 0;
+    font-size: 0.85rem;
+}
+.font-match-hint {
+    margin-top: 12px;
+    font-size: 0.8rem;
+    color: #888;
+}

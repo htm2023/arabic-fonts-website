@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مكتبة خط الثلث</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Katibeh&family=Reem+Kufi:wght@400;700&family=Cairo:wght@400;700&family=Tajawal:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Kufi+Arabic:wght@400;700&family=Markazi+Text:wght@400;700&family=El+Messiri:wght@400;700&family=Rakkas&family=Lemonada:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <h1>مكتبة خط الثلث</h1>
+        <p class="subtitle">اكتب نصك وشاهده بأنماط الخط المختلفة مع التشكيل الكامل</p>
+
+        <!-- مربع الكتابة -->
+        <div class="input-section">
+            <label for="inputText">اكتب نصك هنا:</label>
+            <textarea id="inputText">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</textarea>
+        </div>
+
+        <!-- شريط التشكيل -->
+        <div class="tashkeel-bar">
+            <span class="bar-label">أضف التشكيل (تُضاف العلامة في مكان المؤشر):</span>
+            <button type="button" onclick="addTashkeel('َ')">بَ فتحة</button>
+            <button type="button" onclick="addTashkeel('ُ')">بُ ضمة</button>
+            <button type="button" onclick="addTashkeel('ِ')">بِ كسرة</button>
+            <button type="button" onclick="addTashkeel('ّ')">بّ شدة</button>
+            <button type="button" onclick="addTashkeel('ْ')">بْ سكون</button>
+            <button type="button" onclick="addTashkeel('ً')">بً تنوين فتح</button>
+            <button type="button" onclick="addTashkeel('ٌ')">بٌ تنوين ضم</button>
+            <button type="button" onclick="addTashkeel('ٍ')">بٍ تنوين كسر</button>
+            <button type="button" onclick="addTashkeel('ٰ')">بٰ ألف خنجرية</button>
+            <button type="button" onclick="addTashkeel('ـ')">ـ تطويل</button>
+        </div>
+
+        <!-- علامات زخرفية (زي علامات الإهمال بالثلث الكلاسيكي) -->
+        <div class="tashkeel-bar">
+            <span class="bar-label">علامات زخرفية تجريبية (قارنها بصورتك المرجعية واختر الأقرب — تُضاف بمكان المؤشر):</span>
+            <button type="button" onclick="addTashkeel('ٔ')">بٔ همزة فوقية</button>
+            <button type="button" onclick="addTashkeel('ٕ')">بٕ همزة تحتية</button>
+            <button type="button" onclick="addTashkeel('ۤ')">بۤ مدة صغيرة</button>
+            <button type="button" onclick="addTashkeel('۟')">ب۟ دائرة صغيرة</button>
+        </div>
+
+        <!-- أدوات التحكم -->
+        <div class="controls">
+            <label for="fontSelect">اختر نمط الخط:</label>
+            <select id="fontSelect" onchange="changeFont()">
+                <option value="'ThuluthClassic', serif" selected>خط الثلث الكلاسيكي (مثل الصورة)</option>
+                <option value="'Thuluth', 'Amiri', serif">خط الثلث الأصلي</option>
+                <option value="'AmoshrefThuluth', serif">ثلث أموشرف</option>
+                <option value="'DecotypeThuluthII', serif">ديكوتايب ثلث II</option>
+                <option value="'DecotypeThuluthIII', serif">ديكوتايب ثلث III</option>
+                <option value="'GEThuluthLight', serif">جي إي ثلث خفيف</option>
+                <option value="'JassminTypo', serif">ياسمين تايبو</option>
+                <option value="'Katibeh', serif">كاتبة</option>
+                <option value="'Aref Ruqaa', serif">عارف رقعة</option>
+                <option value="'Reem Kufi', sans-serif">ريم كوفي (عصري)</option>
+                <option value="'Amiri', serif">أميري (الأفضل للتشكيل)</option>
+                <option value="'Noto Naskh Arabic', serif">نسخ (Noto Naskh)</option>
+                <option value="'Noto Kufi Arabic', sans-serif">كوفي (Noto Kufi)</option>
+                <option value="'Markazi Text', serif">مركزي</option>
+                <option value="'El Messiri', serif">المسيري</option>
+                <option value="'Rakkas', serif">رقاص (زخرفي)</option>
+                <option value="'Lemonada', serif">ليمونادة (دائري زخرفي)</option>
+                <option value="'Cairo', sans-serif">القاهرة (عصري)</option>
+                <option value="'Tajawal', sans-serif">تجوال (عصري)</option>
+            </select>
+
+            <label for="fontSize">حجم الخط:</label>
+            <input type="range" id="fontSize" min="30" max="160" value="80" oninput="changeSize()">
+            <span id="sizeValue">80px</span>
+        </div>
+
+        <!-- منطقة العرض -->
+        <div class="output-section">
+            <div id="outputText" class="thuluth-text">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+            <p id="altLetterHint" class="alt-hint">🖱️ اضغط على الحروف المنقّطة الحدود (س ص ق ل م ن و ي) لتبديل شكلها البديل — متاح فقط مع خط «ثلث أموشرف».</p>
+
+            <div class="export-quality">
+                <label for="exportQuality">جودة التصدير (نسخ كصورة / PDF):</label>
+                <select id="exportQuality">
+                    <option value="2">عادية</option>
+                    <option value="4" selected>عالية (موصى بها للطباعة)</option>
+                    <option value="8">فائقة الدقة (ملفات كبيرة)</option>
+                </select>
+            </div>
+
+            <div class="action-buttons">
+                <button id="copyBtn" class="copy-btn">نسخ النص</button>
+                <button id="copyImageBtn" class="copy-btn">نسخ كصورة</button>
+                <button id="exportPdfBtn" class="copy-btn">تصدير PDF</button>
+            </div>
+            <span id="copyMsg" class="copy-msg"></span>
+        </div>
+
+        <!-- استخراج نص من صورة -->
+        <div class="ocr-section">
+            <h3 class="ocr-title">استخراج نص من صورة</h3>
+            <input type="file" id="imageInput" accept="image/*" class="ocr-input">
+            <img id="imagePreview" class="image-preview" style="display:none;">
+            <button id="extractBtn" class="copy-btn">استخراج النص من الصورة</button>
+            <div id="ocrStatus" class="ocr-status"></div>
+            <textarea id="ocrResult" class="ocr-result" placeholder="سيظهر النص المستخرج هنا..." readonly></textarea>
+            <button id="copyOcrBtn" class="copy-btn">نسخ النص المستخرج</button>
+
+            <!-- تحليل نوع الخط من نفس الصورة -->
+            <div class="font-match-section">
+                <h3 class="ocr-title">تحليل نوع الخط</h3>
+                <button id="analyzeFontBtn" class="copy-btn">تحليل نوع الخط من الصورة</button>
+                <div id="fontMatchStatus" class="ocr-status"></div>
+                <ul id="fontMatchResults" class="font-match-results"></ul>
+                <p class="font-match-hint">النتيجة تقريبية بناءً على مقارنة الشكل العام للحروف مع خطوط المكتبة المتوفرة بالموقع، وليست تعرفًا دقيقًا 100%.</p>
+            </div>
+        </div>
+
+        <!-- تصميم حر لشكل الحرف (مسار متجهات حقيقي قابل للتعديل) -->
+        <div class="vector-editor-section">
+            <h3 class="ocr-title">تصميم حر للحروف (تجريبي)</h3>
+            <p class="font-match-hint">
+                اختر خط وحرف عربي واحد، وحمّل شكله الحقيقي (مسار Bezier مستخرج فعليًا من ملف الخط) كنقاط تحكم قابلة للسحب.
+                يدعم حرف واحد منفرد فقط — بدون ربط تلقائي بين الحروف مثل أدوات التصميم الاحترافية.
+            </p>
+            <div class="vector-editor-controls">
+                <label for="vectorFontSelect">الخط:</label>
+                <select id="vectorFontSelect">
+                    <option value="fonts/DTHULUTH-II-1.ttf">الثلث الكلاسيكي</option>
+                    <option value="fonts/ttf1/amoshref-thulth.ttf">ثلث أموشرف</option>
+                    <option value="fonts/ttf4/DecoType Thuluth II Regular/DecoType Thuluth II Regular.ttf">ديكوتايب ثلث II</option>
+                    <option value="fonts/ttf6/decotype-thuluth-iii.ttf">ديكوتايب ثلث III</option>
+                    <option value="fonts/ttf3/GE Thuluth Light/GE Thuluth Light.ttf">جي إي ثلث خفيف</option>
+                    <option value="fonts/ttf5/jassmin-typo.ttf">ياسمين تايبو</option>
+                </select>
+
+                <label for="vectorLetterSelect">الحرف:</label>
+                <select id="vectorLetterSelect"></select>
+
+                <button id="loadVectorBtn" class="copy-btn" type="button">تحميل للتعديل</button>
+                <button id="resetVectorBtn" class="copy-btn" type="button">إعادة تعيين</button>
+            </div>
+            <p class="font-match-hint">اختر "النص المكتوب أعلاه" لتحميل نفس النص الموجود بمربع "اكتب نصك هنا" متصلاً بأشكاله السياقية الصحيحة (بداية/وسط/نهاية)، أو اختر حرفًا واحدًا لتحميله بمفرده. تقدر تسحب نقاط أي حرف منها بشكل مستقل.</p>
+
+            <div class="vector-editor-canvas-wrap">
+                <svg id="vectorEditorSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+            </div>
+
+            <div id="vectorEditorStatus" class="ocr-status"></div>
+
+            <div class="action-buttons">
+                <button id="exportVectorSvgBtn" class="copy-btn" type="button">تصدير SVG</button>
+                <button id="exportVectorPngBtn" class="copy-btn" type="button">تصدير صورة</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/opentype.js@1.3.4/dist/opentype.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
