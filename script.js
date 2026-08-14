@@ -533,11 +533,14 @@ analyzeFontBtn.addEventListener('click', analyzeFontFromImage);
 const vectorFontSelect = document.getElementById('vectorFontSelect');
 const vectorLetterSelect = document.getElementById('vectorLetterSelect');
 const loadVectorBtn = document.getElementById('loadVectorBtn');
+const suggestShapesBtn = document.getElementById('suggestShapesBtn');
 const resetVectorBtn = document.getElementById('resetVectorBtn');
 const vectorEditorSvg = document.getElementById('vectorEditorSvg');
 const exportVectorSvgBtn = document.getElementById('exportVectorSvgBtn');
 const exportVectorPngBtn = document.getElementById('exportVectorPngBtn');
 const vectorEditorStatus = document.getElementById('vectorEditorStatus');
+const shapeSuggestions = document.getElementById('shapeSuggestions');
+const shapeSuggestionsStatus = document.getElementById('shapeSuggestionsStatus');
 
 const ARABIC_LETTERS = ['ا', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ي'];
 vectorLetterSelect.innerHTML = '<option value="">النص المكتوب أعلاه</option>' +
@@ -803,6 +806,122 @@ async function loadVectorLetter() {
 
 loadVectorBtn.addEventListener('click', loadVectorLetter);
 resetVectorBtn.addEventListener('click', loadVectorLetter);
+
+// ===== 8) اقتراح عدة أشكال لنفس الحرف (كل الخطوط × الأشكال السياقية) =====
+// يجمع لكل حرف: شكله بكل خط من خطوط الثلث المحلية، وفي كل خط بكل أشكاله
+// السياقية المتاحة (منفرد/بداية/وسط/نهاية) — عشان المستخدم يقارنها بصورته
+// المرجعية ويختار الأقرب، بدل ما يجرّب خط-خط يدويًا.
+const CONTEXTUAL_FORM_LABELS = ['منفرد', 'بداية', 'وسط', 'نهاية'];
+
+function getVectorFontLibrary() {
+    return Array.from(vectorFontSelect.options).map(o => ({ name: o.textContent, url: o.value }));
+}
+
+async function buildShapeCandidates(letter) {
+    const forms = ARABIC_JOINING_FORMS[letter];
+    if (!forms) return [];
+
+    const fontLibrary = getVectorFontLibrary();
+    const candidates = [];
+
+    for (const font of fontLibrary) {
+        let openTypeFont;
+        try {
+            openTypeFont = await loadOpentypeFont(font.url);
+        } catch (err) {
+            console.warn('تعذّر تحميل الخط:', font.url, err);
+            continue;
+        }
+
+        forms.forEach((formChar, formIndex) => {
+            if (!formChar) return;
+            const glyph = openTypeFont.charToGlyph(formChar);
+            if (!glyph || glyph.index === 0) return; // .notdef: الخط ما يدعم هذا الشكل
+
+            const path = glyph.getPath(0, 0, 300);
+            const commands = path.commands.map(c => ({ ...c }));
+            if (!commands.length) return;
+
+            candidates.push({
+                fontName: font.name,
+                fontUrl: font.url,
+                formLabel: CONTEXTUAL_FORM_LABELS[formIndex],
+                commands
+            });
+        });
+    }
+
+    return candidates;
+}
+
+function renderShapeSuggestions(candidates) {
+    shapeSuggestions.innerHTML = '';
+
+    candidates.forEach(candidate => {
+        const vb = vectorViewBox(candidate.commands);
+
+        const card = document.createElement('div');
+        card.className = 'shape-suggestion-card';
+
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', commandsToPathData(candidate.commands));
+        svg.appendChild(path);
+        card.appendChild(svg);
+
+        const label = document.createElement('span');
+        label.className = 'shape-suggestion-label';
+        label.textContent = `${candidate.fontName} — ${candidate.formLabel}`;
+        card.appendChild(label);
+
+        card.addEventListener('click', () => {
+            shapeSuggestions.querySelectorAll('.shape-suggestion-card.selected')
+                .forEach(el => el.classList.remove('selected'));
+            card.classList.add('selected');
+
+            vectorCommands = candidate.commands.map(c => ({ ...c }));
+            renderVectorEditor();
+            vectorFontSelect.value = candidate.fontUrl;
+            vectorEditorStatus.textContent = `تم تحميل شكل "${candidate.formLabel}" من خط ${candidate.fontName} ✅ — اسحب النقاط للتعديل`;
+        });
+
+        shapeSuggestions.appendChild(card);
+    });
+}
+
+suggestShapesBtn.addEventListener('click', async function () {
+    const letter = vectorLetterSelect.value;
+    if (!letter) {
+        shapeSuggestionsStatus.textContent = 'اختر حرفًا واحدًا أولاً (وليس "النص المكتوب أعلاه")';
+        shapeSuggestions.innerHTML = '';
+        return;
+    }
+
+    suggestShapesBtn.disabled = true;
+    shapeSuggestions.innerHTML = '';
+    shapeSuggestionsStatus.textContent = 'جاري تجهيز الاقتراحات...';
+
+    try {
+        const candidates = await buildShapeCandidates(letter);
+        if (!candidates.length) {
+            shapeSuggestionsStatus.textContent = 'تعذّر إيجاد أشكال لهذا الحرف بخطوط المكتبة';
+            return;
+        }
+        renderShapeSuggestions(candidates);
+        shapeSuggestionsStatus.textContent = `تم إيجاد ${candidates.length} شكلاً — اضغط على أي شكل لتحميله للتعديل`;
+    } catch (err) {
+        console.error(err);
+        shapeSuggestionsStatus.textContent = 'حدث خطأ أثناء تجهيز الاقتراحات';
+    } finally {
+        suggestShapesBtn.disabled = false;
+    }
+});
+
+vectorLetterSelect.addEventListener('change', function () {
+    shapeSuggestions.innerHTML = '';
+    shapeSuggestionsStatus.textContent = '';
+});
 
 exportVectorSvgBtn.addEventListener('click', function () {
     if (!vectorCommands) return;

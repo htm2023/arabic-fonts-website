@@ -1,31 +1,116 @@
+/* ===== تعريف الخطوط العربية (ملفات محلية - مسارات صحيحة) ===== */
+
+/* --- خط الثلث (Thuluth) - عدة إصدارات --- */
 @font-face {
     font-family: 'ThuluthClassic';
-    src: url('fonts/DTHULUTH-II-1.ttf') format('truetype');
+    src: url("fonts/DTHULUTH-II-1.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
 }
+
 @font-face {
     font-family: 'Thuluth';
-    src: url('fonts/DTHULUTH-II-1.ttf') format('truetype');
+    src: url("fonts/thuluth/decotype-thuluth/DecoType Thuluth.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
 }
+
+@font-face {
+    font-family: 'Thuluth';
+    src: url("fonts/thuluth/decotype-thuluth/DTHULUTH.TTF") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
 @font-face {
     font-family: 'AmoshrefThuluth';
-    src: url('fonts/ttf1/amoshref-thulth.ttf') format('truetype');
+    src: url("fonts/ttf1/amoshref-thulth.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
 }
+
 @font-face {
     font-family: 'DecotypeThuluthII';
-    src: url('fonts/ttf4/DecoType Thuluth II Regular/DecoType Thuluth II Regular.ttf') format('truetype');
+    src: url("fonts/ttf4/DecoType Thuluth II Regular/DecoType Thuluth II Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
 }
+
 @font-face {
     font-family: 'DecotypeThuluthIII';
-    src: url('fonts/ttf6/decotype-thuluth-iii.ttf') format('truetype');
+    src: url("fonts/ttf6/decotype-thuluth-iii.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
 }
+
 @font-face {
     font-family: 'GEThuluthLight';
-    src: url('fonts/ttf3/GE Thuluth Light/GE Thuluth Light.ttf') format('truetype');
+    src: url("fonts/ttf3/GE Thuluth Light/GE Thuluth Light.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
 }
+
 @font-face {
     font-family: 'JassminTypo';
-    src: url('fonts/ttf5/jassmin-typo.ttf') format('truetype');
+    src: url("fonts/ttf5/jassmin-typo.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
 }
+
+/* --- خط الديواني (Diwani) --- */
+@font-face {
+    font-family: 'Diwani';
+    src: url("fonts/diwani/diwani-letter/Diwani Letter.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* --- خط النسخ (Naskh) --- */
+@font-face {
+    font-family: 'Naskh';
+    src: url("fonts/naskh/Amiri-1.003/Amiri-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Naskh';
+    src: url("fonts/naskh/Amiri-1.003/Amiri-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* --- خط الرقعة (Ruqaa) --- */
+@font-face {
+    font-family: 'Ruqaa';
+    src: url("fonts/ruqaa/aref-ruqaa/ArefRuqaa-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ruqaa';
+    src: url("fonts/ruqaa/aref-ruqaa/ArefRuqaa-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* --- خط الفارسي (Farsi / Nastaleeq) --- */
+@font-face {
+    font-family: 'Farsi';
+    src: url("fonts/farsi/Alvi Nastaleeq Regular/Alvi Nastaleeq Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* ===== استخدام الخطوط (Classes) ===== */
+.font-thuluth      { font-family: 'Thuluth', 'ThuluthClassic', 'DecotypeThuluthII', serif; }
+.font-thuluth-classic { font-family: 'ThuluthClassic', serif; }
+.font-amoshref    { font-family: 'AmoshrefThuluth', serif; }
+.font-diwani      { font-family: 'Diwani', serif; }
+.font-naskh       { font-family: 'Naskh', 'Amiri', serif; }
+.font-ruqaa       { font-family: 'Ruqaa', 'Aref Ruqaa', serif; }
+.font-farsi       { font-family: 'Farsi', 'Noto Nastaliq Urdu', serif; }
 
 /* ===== الأساسيات ===== */
 * {
@@ -60,6 +145,24 @@ h1 {
     color: #666;
     margin: 0 0 25px;
     font-size: 1rem;
+}
+
+.page-nav-link {
+    text-align: center;
+    margin: 0 0 25px;
+    padding: 12px;
+    background: #f0f6ff;
+    border: 1px solid #cfe0ff;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+.page-nav-link a {
+    color: #0047ab;
+    text-decoration: none;
+    font-weight: bold;
+}
+.page-nav-link a:hover {
+    text-decoration: underline;
 }
 
 /* ===== مربع الكتابة ===== */
@@ -160,7 +263,7 @@ h1 {
     color: #111;
 }
 
-/* ===== حروف بأشكال بديلة قابلة للتبديل (متاح مع خط ثلث أموشرف) ===== */
+/* ===== حروف بأشكال بديلة قابلة للتبديل ===== */
 .thuluth-text .alt-letter {
     cursor: pointer;
     border-bottom: 1px dotted rgba(0, 0, 0, 0.35);
@@ -180,7 +283,7 @@ h1 {
     color: #666;
 }
 
-/* ===== الأزرار العامة (نسخ / تصدير) ===== */
+/* ===== الأزرار العامة ===== */
 .copy-btn {
     padding: 8px 20px;
     margin-top: 15px;
@@ -240,7 +343,7 @@ h1 {
     font-family: 'Reem Kufi', sans-serif;
 }
 
-/* ===== قسم استخراج النص من صورة (OCR) ===== */
+/* ===== قسم OCR ===== */
 .ocr-section {
     margin-top: 40px;
     padding-top: 20px;
@@ -339,6 +442,47 @@ h1 {
     fill: #0066ff;
 }
 
+/* ===== اقتراحات أشكال الحرف ===== */
+.shape-suggestions {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+    margin: 15px auto;
+    max-width: 700px;
+}
+.shape-suggestion-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    text-align: center;
+}
+.shape-suggestion-card:hover {
+    border-color: #0066ff;
+    background: #f5f9ff;
+}
+.shape-suggestion-card.selected {
+    border-color: #222;
+    background: #f2f2f2;
+}
+.shape-suggestion-card svg {
+    width: 100%;
+    height: 70px;
+    overflow: visible;
+}
+.shape-suggestion-card svg path {
+    fill: #000;
+}
+.shape-suggestion-label {
+    display: block;
+    font-size: 0.72rem;
+    color: #555;
+    margin-top: 6px;
+    line-height: 1.3;
+}
+
 /* ===== قسم تحليل نوع الخط ===== */
 .font-match-section {
     margin-top: 30px;
@@ -384,4 +528,187 @@ h1 {
     margin-top: 12px;
     font-size: 0.8rem;
     color: #888;
+}
+
+/* ===== صفحة لوحة التركيب الحر للحروف ===== */
+.composition-page {
+    max-width: 1100px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 15px;
+    color: #555;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+.back-link:hover {
+    color: #111;
+    text-decoration: underline;
+}
+
+/* ===== لوحة اختيار الحروف ===== */
+.letter-palette {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 15px;
+    padding: 12px;
+    background: #f9f8f6;
+    border-radius: 8px;
+}
+.palette-letter-btn {
+    width: 42px;
+    height: 42px;
+    font-size: 1.4rem;
+    font-family: 'Amiri', serif;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+.palette-letter-btn:hover {
+    background: #eef4ff;
+    border-color: #0066ff;
+}
+
+/* ===== اللوحة (Canvas) ===== */
+.composition-canvas-wrap {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 8px;
+}
+#compositionSvg {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    background: #fff;
+    border-radius: 8px;
+    touch-action: none;
+}
+.letter-instance-path {
+    fill: #141414;
+    cursor: grab;
+}
+.letter-instance-path:active {
+    cursor: grabbing;
+}
+
+/* ===== مقابض التحديد ===== */
+.selection-outline {
+    fill: none;
+    stroke: #0066ff;
+    stroke-width: 2;
+    stroke-dasharray: 6 4;
+    pointer-events: none;
+}
+.selection-line {
+    stroke: #0066ff;
+    stroke-width: 1.5;
+    stroke-dasharray: 3 3;
+    pointer-events: none;
+}
+.rotate-handle {
+    fill: #fff2cc;
+    stroke: #b8860b;
+    stroke-width: 2;
+    cursor: grab;
+}
+.rotate-handle:active {
+    cursor: grabbing;
+}
+.resize-handle {
+    fill: #e6f0ff;
+    stroke: #0066ff;
+    stroke-width: 2;
+    cursor: nwse-resize;
+}
+.delete-handle {
+    fill: #fdecea;
+    stroke: #b3261e;
+    stroke-width: 2;
+    cursor: pointer;
+}
+.delete-handle-label {
+    font-size: 18px;
+    font-weight: bold;
+    fill: #b3261e;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ===== شريط أدوات الحرف المحدد ===== */
+.composition-toolbar {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f9f8f6;
+    border-radius: 8px;
+    min-height: 30px;
+}
+.instance-toolbar-info {
+    margin: 0 0 12px;
+    font-weight: bold;
+}
+.instance-shapes-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+.instance-shape-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 74px;
+    padding: 6px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+}
+.instance-shape-btn:hover {
+    border-color: #0066ff;
+}
+.instance-shape-btn.active {
+    border-color: #222;
+    background: #f2f2f2;
+}
+.instance-shape-btn svg {
+    width: 100%;
+    height: 42px;
+}
+.instance-shape-btn svg path {
+    fill: #000;
+}
+.instance-shape-btn span {
+    font-size: 0.72rem;
+    color: #555;
+}
+.instance-actions-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.instance-action-btn {
+    margin-top: 0;
+    padding: 6px 16px;
+    font-size: 0.9rem;
+}
+.danger-btn {
+    background: #b3261e;
+}
+.danger-btn:hover {
+    background: #8f1e18;
+}
+
+.composition-canvas-controls {
+    margin-top: 15px;
+}
+.composition-help {
+    text-align: center;
 }

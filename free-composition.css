@@ -1,0 +1,183 @@
+/* ===== صفحة لوحة التركيب الحر للحروف ===== */
+
+.composition-page {
+    max-width: 1100px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 15px;
+    color: #555;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+.back-link:hover {
+    color: #111;
+    text-decoration: underline;
+}
+
+/* ===== لوحة اختيار الحروف ===== */
+.letter-palette {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 15px;
+    padding: 12px;
+    background: #f9f8f6;
+    border-radius: 8px;
+}
+.palette-letter-btn {
+    width: 42px;
+    height: 42px;
+    font-size: 1.4rem;
+    font-family: 'Amiri', serif;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+.palette-letter-btn:hover {
+    background: #eef4ff;
+    border-color: #0066ff;
+}
+
+/* ===== اللوحة (Canvas) ===== */
+.composition-canvas-wrap {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 8px;
+}
+#compositionSvg {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    background: #fff;
+    border-radius: 8px;
+    touch-action: none;
+}
+.letter-instance-path {
+    fill: #141414;
+    cursor: grab;
+}
+.letter-instance-path:active {
+    cursor: grabbing;
+}
+
+/* ===== مقابض التحديد ===== */
+.selection-outline {
+    fill: none;
+    stroke: #0066ff;
+    stroke-width: 2;
+    stroke-dasharray: 6 4;
+    pointer-events: none;
+}
+.selection-line {
+    stroke: #0066ff;
+    stroke-width: 1.5;
+    stroke-dasharray: 3 3;
+    pointer-events: none;
+}
+.rotate-handle {
+    fill: #fff2cc;
+    stroke: #b8860b;
+    stroke-width: 2;
+    cursor: grab;
+}
+.rotate-handle:active {
+    cursor: grabbing;
+}
+.resize-handle {
+    fill: #e6f0ff;
+    stroke: #0066ff;
+    stroke-width: 2;
+    cursor: nwse-resize;
+}
+.delete-handle {
+    fill: #fdecea;
+    stroke: #b3261e;
+    stroke-width: 2;
+    cursor: pointer;
+}
+.delete-handle-label {
+    font-size: 18px;
+    font-weight: bold;
+    fill: #b3261e;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ===== شريط أدوات الحرف المحدد ===== */
+.composition-toolbar {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f9f8f6;
+    border-radius: 8px;
+    min-height: 30px;
+}
+.instance-toolbar-info {
+    margin: 0 0 12px;
+    font-weight: bold;
+}
+.instance-shapes-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+.instance-shape-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 74px;
+    padding: 6px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+}
+.instance-shape-btn:hover {
+    border-color: #0066ff;
+}
+.instance-shape-btn.active {
+    border-color: #222;
+    background: #f2f2f2;
+}
+.instance-shape-btn svg {
+    width: 100%;
+    height: 42px;
+}
+.instance-shape-btn svg path {
+    fill: #000;
+}
+.instance-shape-btn span {
+    font-size: 0.72rem;
+    color: #555;
+}
+.instance-actions-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.instance-action-btn {
+    margin-top: 0;
+    padding: 6px 16px;
+    font-size: 0.9rem;
+}
+.danger-btn {
+    background: #b3261e;
+}
+.danger-btn:hover {
+    background: #8f1e18;
+}
+
+.composition-canvas-controls {
+    margin-top: 15px;
+}
+.composition-help {
+    text-align: center;
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التركيب الحر للحروف</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="free-composition.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Reem+Kufi:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container composition-page">
+        <a href="index.html" class="back-link">→ الرجوع لمكتبة خط الثلث</a>
+
+        <h1>لوحة التركيب الحر للحروف</h1>
+        <p class="subtitle">اضغط على أي حرف لإضافته للوحة، ثم اسحبه وين ما تحب، دوّره، كبّره أو صغّره، وبدّل شكله بين الأشكال الحقيقية المتوفرة فعليًا بالخط — بدون أي تشكيل تلقائي لجملة كاملة يفرضه المتصفح.</p>
+
+        <div class="controls">
+            <label for="compFontSelect">خط الحروف الجديدة:</label>
+            <select id="compFontSelect">
+                <option value="fonts/DTHULUTH-II-1.ttf">الثلث الكلاسيكي</option>
+                <option value="fonts/ttf1/amoshref-thulth.ttf">ثلث أموشرف</option>
+                <option value="fonts/ttf4/DecoType Thuluth II Regular/DecoType Thuluth II Regular.ttf">ديكوتايب ثلث II</option>
+                <option value="fonts/ttf6/decotype-thuluth-iii.ttf">ديكوتايب ثلث III</option>
+                <option value="fonts/ttf3/GE Thuluth Light/GE Thuluth Light.ttf">جي إي ثلث خفيف</option>
+                <option value="fonts/ttf5/jassmin-typo.ttf">ياسمين تايبو</option>
+            </select>
+        </div>
+
+        <div class="letter-palette" id="letterPalette"></div>
+
+        <div id="compositionStatus" class="ocr-status"></div>
+
+        <div class="composition-canvas-wrap">
+            <svg id="compositionSvg" viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg">
+                <g id="instancesLayer"></g>
+                <g id="selectionLayer"></g>
+            </svg>
+        </div>
+
+        <div class="composition-toolbar" id="instanceToolbar">
+            <p class="font-match-hint">اضغط على أي حرف موجود باللوحة لتحديده وتعديله.</p>
+        </div>
+
+        <div class="controls composition-canvas-controls">
+            <button id="clearCanvasBtn" class="copy-btn" type="button">مسح اللوحة</button>
+            <label for="compExportQuality">جودة تصدير الصورة:</label>
+            <select id="compExportQuality">
+                <option value="2">عادية</option>
+                <option value="4" selected>عالية (موصى بها للطباعة)</option>
+                <option value="8">فائقة الدقة (ملفات كبيرة)</option>
+            </select>
+            <button id="exportCompSvgBtn" class="copy-btn" type="button">تصدير SVG</button>
+            <button id="exportCompPngBtn" class="copy-btn" type="button">تصدير صورة PNG</button>
+        </div>
+
+        <p class="font-match-hint composition-help">
+            تحريك: اسحب الحرف من جسمه. تدوير: اسحب المقبض الأصفر الأعلى. تكبير/تصغير: اسحب المقبض الأزرق بالزاوية.
+            حذف: اضغط المقبض الأحمر بالزاوية أو مفتاح Delete بعد التحديد.
+        </p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/opentype.js@1.3.4/dist/opentype.min.js"></script>
+    <script src="free-composition.js"></script>
+</body>
+</html>

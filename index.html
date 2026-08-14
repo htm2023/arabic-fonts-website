@@ -17,6 +17,10 @@
         <h1>مكتبة خط الثلث</h1>
         <p class="subtitle">اكتب نصك وشاهده بأنماط الخط المختلفة مع التشكيل الكامل</p>
 
+        <p class="page-nav-link">
+            <a href="free-composition.html">🖊️ جرّب لوحة التركيب الحر للحروف (صفحة جديدة) — اسحب الحرف، حطّه وين ما تحب، دوّره، وبدّل شكله بدون تشكيل تلقائي</a>
+        </p>
+
         <!-- مربع الكتابة -->
         <div class="input-section">
             <label for="inputText">اكتب نصك هنا:</label>
@@ -141,9 +145,14 @@
                 <select id="vectorLetterSelect"></select>
 
                 <button id="loadVectorBtn" class="copy-btn" type="button">تحميل للتعديل</button>
+                <button id="suggestShapesBtn" class="copy-btn" type="button">اقترح أشكالًا للحرف</button>
                 <button id="resetVectorBtn" class="copy-btn" type="button">إعادة تعيين</button>
             </div>
             <p class="font-match-hint">اختر "النص المكتوب أعلاه" لتحميل نفس النص الموجود بمربع "اكتب نصك هنا" متصلاً بأشكاله السياقية الصحيحة (بداية/وسط/نهاية)، أو اختر حرفًا واحدًا لتحميله بمفرده. تقدر تسحب نقاط أي حرف منها بشكل مستقل.</p>
+            <p class="font-match-hint">اختر حرفًا واحدًا ثم اضغط "اقترح أشكالًا للحرف" لعرض كل الأشكال المتاحة له (من كل خطوط الثلث × الأشكال السياقية منفرد/بداية/وسط/نهاية)، واختر الأقرب لمرجعك لتحميله جاهزًا للتعديل.</p>
+
+            <div id="shapeSuggestionsStatus" class="ocr-status"></div>
+            <div id="shapeSuggestions" class="shape-suggestions"></div>
 
             <div class="vector-editor-canvas-wrap">
                 <svg id="vectorEditorSvg" xmlns="http://www.w3.org/2000/svg"></svg>
