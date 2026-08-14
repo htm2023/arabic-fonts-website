@@ -146,7 +146,7 @@ body {
     background: #f5f3ef;
     margin: 0;
     padding: 0 15px 30px;
-    font-family: 'Reem Kufi', sans-serif;
+    font-family: 'Almarai', sans-serif;
     color: #111;
 }
 
@@ -208,7 +208,7 @@ h1 {
     gap: 10px;
 }
 .site-logo {
-    font-family: 'Reem Kufi', sans-serif;
+    font-family: 'Almarai', sans-serif;
     font-weight: bold;
     font-size: 1.2rem;
     line-height: 1;
@@ -528,7 +528,7 @@ details.tashkeel-bar[open] > summary {
     padding: 6px 10px;
     border-radius: 6px;
     border: 1px solid #ccc;
-    font-family: 'Reem Kufi', sans-serif;
+    font-family: 'Almarai', sans-serif;
 }
 .controls input[type="range"] {
     flex: 1;
@@ -639,7 +639,7 @@ details.tashkeel-bar[open] > summary {
     padding: 5px 8px;
     border-radius: 6px;
     border: 1px solid #ccc;
-    font-family: 'Reem Kufi', sans-serif;
+    font-family: 'Almarai', sans-serif;
 }
 
 /* ===== قسم OCR ===== */
@@ -650,7 +650,7 @@ details.tashkeel-bar[open] > summary {
     text-align: center;
 }
 .ocr-title {
-    font-family: 'Reem Kufi', sans-serif;
+    font-family: 'Almarai', sans-serif;
     margin-bottom: 15px;
 }
 .ocr-input {
@@ -669,7 +669,7 @@ details.tashkeel-bar[open] > summary {
     min-height: 100px;
     padding: 10px;
     font-size: 1.2rem;
-    font-family: 'Reem Kufi', sans-serif;
+    font-family: 'Almarai', sans-serif;
     text-align: right;
     direction: rtl;
     border-radius: 8px;

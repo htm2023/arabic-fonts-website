@@ -974,8 +974,9 @@ exportVectorPngBtn.addEventListener('click', function () {
 
 // ===== حركة رسم شعار الـHero بخط الثلث (SVG stroke-draw) =====
 // يحمّل شكل كلمة "ثلث" الحقيقي من ملف الخط عبر opentype.js (نفس الأسلوب
-// المستخدم بمحرر الفيكتور)، ويرسمه بحركة stroke-dashoffset ثم يملؤه بالذهبي.
-// لو تعذّر تحميل الخط (مثلاً بدون سيرفر محلي)، يظهر نص Thuluth ثابت بدلاً منه.
+// المستخدم بمحرر الفيكتور)، ويرسمه بتأثير "الرسم بالحبر" عبر GSAP DrawSVGPlugin
+// ثم يملؤه بالذهبي. لو تعذّر تحميل GSAP أو الخط (مثلاً بدون سيرفر محلي)،
+// يظهر نص Thuluth ثابت بدلاً منه.
 async function initHeroCalligraphy() {
     const svg = document.getElementById('heroDrawSvg');
     const fallback = document.querySelector('.hero-calligraphy-fallback');
@@ -985,6 +986,14 @@ async function initHeroCalligraphy() {
         svg.style.display = 'none';
         if (fallback) fallback.classList.add('show');
     }
+
+    const gsapReady = typeof gsap !== 'undefined' && typeof DrawSVGPlugin !== 'undefined';
+    if (!gsapReady) {
+        console.warn('تعذّر تحميل GSAP/DrawSVGPlugin، سيظهر نص ثابت بدلاً من الرسم المتحرك.');
+        showFallback();
+        return;
+    }
+    gsap.registerPlugin(DrawSVGPlugin);
 
     try {
         const font = await loadOpentypeFont('fonts/DTHULUTH-II-1.ttf');
@@ -1012,24 +1021,20 @@ async function initHeroCalligraphy() {
         svg.appendChild(pathEl);
 
         if (prefersReducedMotion) {
+            gsap.set(pathEl, { drawSVG: '100%' });
             pathEl.classList.add('is-inked');
             return;
         }
 
-        const length = pathEl.getTotalLength();
-        pathEl.style.strokeDasharray = String(length);
-        pathEl.style.strokeDashoffset = String(length);
-
-        requestAnimationFrame(() => {
-            pathEl.style.transition = 'stroke-dashoffset 2.4s ease';
-            pathEl.style.strokeDashoffset = '0';
-        });
-
-        pathEl.addEventListener('transitionend', function onDrawEnd(e) {
-            if (e.propertyName !== 'stroke-dashoffset') return;
-            pathEl.removeEventListener('transitionend', onDrawEnd);
-            pathEl.style.transition = 'fill 0.6s ease';
-            pathEl.classList.add('is-inked');
+        gsap.set(pathEl, { drawSVG: '0%' });
+        gsap.to(pathEl, {
+            drawSVG: '100%',
+            duration: 2.4,
+            ease: 'power2.inOut',
+            onComplete: () => {
+                pathEl.style.transition = 'fill 0.6s ease';
+                pathEl.classList.add('is-inked');
+            }
         });
     } catch (err) {
         console.warn('تعذّر تحميل رسم الشعار المتحرك، سيظهر نص ثابت بدلاً منه:', err);
