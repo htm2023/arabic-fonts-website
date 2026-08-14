@@ -972,8 +972,8 @@ exportVectorPngBtn.addEventListener('click', function () {
     });
 });
 
-// ===== حركة رسم شعار الـHero بخط الثلث (SVG stroke-draw) =====
-// يحمّل شكل كلمة "ثلث" الحقيقي من ملف الخط عبر opentype.js (نفس الأسلوب
+// ===== حركة رسم شعار الـHero بخط الثلث (GSAP DrawSVGPlugin) =====
+// يحمّل شكل كلمة "أهلاً" الحقيقي من ملف الخط عبر opentype.js (نفس الأسلوب
 // المستخدم بمحرر الفيكتور)، ويرسمه بتأثير "الرسم بالحبر" عبر GSAP DrawSVGPlugin
 // ثم يملؤه بالذهبي. لو تعذّر تحميل GSAP أو الخط (مثلاً بدون سيرفر محلي)،
 // يظهر نص Thuluth ثابت بدلاً منه.
@@ -997,7 +997,7 @@ async function initHeroCalligraphy() {
 
     try {
         const font = await loadOpentypeFont('fonts/DTHULUTH-II-1.ttf');
-        const glyphChars = shapeArabicWordToVisualGlyphs('ثلث');
+        const glyphChars = shapeArabicWordToVisualGlyphs('أهلاً');
         const fontSize = 300;
         const scale = fontSize / font.unitsPerEm;
         let penX = 0;

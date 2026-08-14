@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>لوح الخطّاط — تركيب حر للحروف | الخطّاط</title>
+<title>لوح الخطّاط — تركيب حر للحروف | خطّاط</title>
 <meta name="description" content="ركّب لوحتك الخاصة من حروف خط الثلث: امزج حروفاً من عدة خطوط، أضف تشكيلاً وزخارف، حرّك وكبّر ودوّر بحرية، وصدّر النتيجة كـ SVG أو PNG — بلا تشكيل تلقائي مفروض.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ar_AR">
-<meta property="og:title" content="لوح الخطّاط — تركيب حر للحروف | الخطّاط">
+<meta property="og:title" content="لوح الخطّاط — تركيب حر للحروف | خطّاط">
 <meta property="og:description" content="ركّب لوحتك الخاصة من حروف خط الثلث: امزج حروفاً من عدة خطوط، أضف تشكيلاً وزخارف، حرّك وكبّر ودوّر بحرية، وصدّر النتيجة كـ SVG أو PNG.">
 <meta property="og:image" content="og-image.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,18 +16,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/1.3.4/opentype.min.js"></script>
 <style>
   :root{
-    --wood-dark:#1c130c;
-    --wood:#2c1f15;
-    --wood-light:#4a3623;
+    --wood-dark:#0c1219;
+    --wood:#161f29;
+    --wood-light:#212c38;
     --paper:#ece0c4;
     --paper-line:#cdb98a;
     --ink:#221912;
-    --brass:#c99a44;
-    --brass-bright:#e3b866;
+    --brass:#dcac47;
+    --brass-bright:#eac06a;
     --teal:#2f6f68;
     --teal-bright:#3f8f86;
     --guide:#e0574a;
-    --text-soft:#d8c9a6;
+    --text-soft:#f6f1e6;
     --text-mute:#9c8a68;
     --danger:#a8452f;
   }
@@ -36,7 +36,7 @@
   body{
     margin:0;
     background:
-      radial-gradient(ellipse at 20% -10%, #3a2a1a 0%, transparent 55%),
+      radial-gradient(ellipse at 20% -10%, #1f2c3d 0%, transparent 55%),
       var(--wood-dark);
     color:var(--text-soft);
     font-family:'Almarai', sans-serif;
@@ -90,7 +90,7 @@
     gap:6px;
   }
   .btn:hover{background:var(--wood-light); color:#fff;}
-  .btn.primary{background:var(--brass); border-color:var(--brass); color:#241a0c;}
+  .btn.primary{background:var(--brass); border-color:var(--brass); color:#0c1219;}
   .btn.primary:hover{background:var(--brass-bright);}
   .btn.danger{border-color:#5c2e22;}
   .btn.danger:hover{background:var(--danger); color:#fff;}
@@ -140,7 +140,7 @@
     cursor:pointer;
     font-size:.78rem;
   }
-  .font-chip.active{border-color:var(--brass); background:#241a10;}
+  .font-chip.active{border-color:var(--brass); background:#101a24;}
   .font-chip span{flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   .font-chip .rm{color:var(--text-mute); cursor:pointer; padding:0 3px;}
   .font-chip .rm:hover{color:var(--danger);}
@@ -196,7 +196,7 @@
     transition:.12s;
     padding:4px;
   }
-  .letter-btn:hover{border-color:var(--brass); background:#241a10;}
+  .letter-btn:hover{border-color:var(--brass); background:#101a24;}
   .letter-btn.disabled{opacity:.25; cursor:not-allowed;}
   .letter-btn svg{width:100%; height:100%; fill:var(--paper);}
   .letter-btn:hover svg{fill:var(--brass-bright);}
@@ -224,7 +224,7 @@
   }
   .tashkeel-btn:hover{
     border-color:var(--brass);
-    background:#241a10;
+    background:#101a24;
     color:#fff;
     transform:scale(1.08);
   }
@@ -252,7 +252,7 @@
   }
   .decoration-btn:hover{
     border-color:var(--teal-bright);
-    background:#241a10;
+    background:#101a24;
     color:#fff;
     transform:scale(1.08);
   }
@@ -372,7 +372,7 @@
     <h1>لوح الخطّاط</h1>
     <span>تركيب حرّ للحروف — بلا تشكيل تلقائي مفروض</span>
   </div>
-  <a href="index.html" class="back-link-wood">→ الرجوع للخطّاط</a>
+  <a href="index.html" class="back-link-wood">→ الرجوع لخطّاط</a>
   <div class="toolbar">
     <button class="btn toggle" id="gridToggle">▦ شبكة</button>
     <button class="btn toggle active" id="snapToggle">🧲 انجذاب</button>
