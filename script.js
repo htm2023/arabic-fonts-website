@@ -980,24 +980,34 @@ exportVectorPngBtn.addEventListener('click', function () {
 async function initHeroCalligraphy() {
     const svg = document.getElementById('heroDrawSvg');
     const fallback = document.querySelector('.hero-calligraphy-fallback');
-    if (!svg) return;
+    console.log('[hero] بدء initHeroCalligraphy — svg موجود:', !!svg, '| prefersReducedMotion:', prefersReducedMotion);
+    if (!svg) {
+        console.warn('[hero] لم يتم العثور على #heroDrawSvg بالـDOM — توقف التنفيذ هنا.');
+        return;
+    }
 
     function showFallback() {
+        console.warn('[hero] عرض النص الاحتياطي الثابت بدل الأنيميشن.');
         svg.style.display = 'none';
         if (fallback) fallback.classList.add('show');
     }
 
-    const gsapReady = typeof gsap !== 'undefined' && typeof DrawSVGPlugin !== 'undefined';
-    if (!gsapReady) {
+    const gsapLoaded = typeof gsap !== 'undefined';
+    const drawSvgLoaded = typeof DrawSVGPlugin !== 'undefined';
+    console.log('[hero] gsap محمّل:', gsapLoaded, '| DrawSVGPlugin محمّل:', drawSvgLoaded);
+    if (!gsapLoaded || !drawSvgLoaded) {
         console.warn('تعذّر تحميل GSAP/DrawSVGPlugin، سيظهر نص ثابت بدلاً من الرسم المتحرك.');
         showFallback();
         return;
     }
     gsap.registerPlugin(DrawSVGPlugin);
+    console.log('[hero] تم تسجيل DrawSVGPlugin.');
 
     try {
         const font = await loadOpentypeFont('fonts/DTHULUTH-II-1.ttf');
+        console.log('[hero] تم تحميل الخط، unitsPerEm:', font && font.unitsPerEm);
         const glyphChars = shapeArabicWordToVisualGlyphs('أهلاً');
+        console.log('[hero] أشكال الحروف الناتجة عن التشكيل السياقي:', glyphChars);
         const fontSize = 300;
         const scale = fontSize / font.unitsPerEm;
         let penX = 0;
@@ -1008,7 +1018,9 @@ async function initHeroCalligraphy() {
             commands.push(...path.commands);
             penX += (glyph.advanceWidth || 0) * scale;
         }
+        console.log('[hero] عدد أوامر مسار SVG المستخرجة من الخط:', commands.length);
         if (!commands.length) {
+            console.warn('[hero] الخط لا يحتوي أي مسار مرسوم لهذه الحروف.');
             showFallback();
             return;
         }
@@ -1019,25 +1031,31 @@ async function initHeroCalligraphy() {
         pathEl.setAttribute('class', 'hero-draw-path');
         pathEl.setAttribute('d', commandsToPathData(commands));
         svg.appendChild(pathEl);
+        console.log('[hero] تمت إضافة عنصر <path> لعنصر SVG بالـHero.');
 
         if (prefersReducedMotion) {
+            console.log('[hero] prefers-reduced-motion مفعّل بالمتصفح/النظام — سيظهر الشكل كاملاً فوراً بدون رسم متدرّج (سلوك متعمّد لإتاحة الوصول، وليس عطلاً).');
             gsap.set(pathEl, { drawSVG: '100%' });
             pathEl.classList.add('is-inked');
             return;
         }
 
+        console.log('[hero] استدعاء gsap.set/gsap.to الآن لبدء أنيميشن الرسم...');
         gsap.set(pathEl, { drawSVG: '0%' });
         gsap.to(pathEl, {
             drawSVG: '100%',
             duration: 2.4,
             ease: 'power2.inOut',
+            onStart: () => console.log('[hero] ✅ بدأ تشغيل أنيميشن drawSVG فعلياً.'),
             onComplete: () => {
+                console.log('[hero] ✅ اكتمل الرسم، يبدأ التحبير بالذهبي.');
                 pathEl.style.transition = 'fill 0.6s ease';
                 pathEl.classList.add('is-inked');
             }
         });
+        console.log('[hero] تم إرسال أمر gsap.to (لا يعني هذا اكتمال التشغيل، راقب رسالة onStart أعلاه).');
     } catch (err) {
-        console.warn('تعذّر تحميل رسم الشعار المتحرك، سيظهر نص ثابت بدلاً منه:', err);
+        console.error('[hero] ❌ خطأ أثناء تجهيز رسم الشعار المتحرك:', err);
         showFallback();
     }
 }

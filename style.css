@@ -258,12 +258,13 @@ h1 {
 }
 .hero h1 {
     color: var(--ivory);
+    font-size: 1.35rem;
 }
 .hero .subtitle {
     color: var(--ivory);
 }
 .hero-calligraphy {
-    height: 110px;
+    height: clamp(150px, 40vw, 230px);
     margin: 0 auto 14px;
     display: flex;
     align-items: center;
@@ -271,7 +272,7 @@ h1 {
 }
 .hero-draw-svg {
     height: 100%;
-    max-width: 260px;
+    max-width: min(520px, 100%);
 }
 .hero-draw-path {
     fill: none;
@@ -288,12 +289,62 @@ h1 {
 .hero-calligraphy-fallback {
     display: none;
     font-family: 'ThuluthClassic', serif;
-    font-size: 4rem;
+    font-size: clamp(3.2rem, 12vw, 6.8rem);
     color: var(--gold-400);
     line-height: 1;
 }
 .hero-calligraphy-fallback.show {
     display: block;
+}
+
+/* ===== قسم العرض التوضيحي (شاهد خطّاط وهو يعمل) ===== */
+.demo-section {
+    max-width: 830px;
+    margin: 0 auto 18px;
+    padding: 40px 24px 46px;
+    background: linear-gradient(160deg, var(--ink-900) 0%, var(--ink-800) 55%, var(--ink-700) 100%);
+    border-radius: 18px;
+    box-shadow: 0 10px 32px rgba(12, 18, 25, 0.28);
+    text-align: center;
+}
+.demo-section h2 {
+    color: var(--ivory);
+    font-size: 1.3rem;
+    margin: 0 0 22px;
+}
+.demo-frame {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--ink-800);
+    border: 1px solid var(--gold-500);
+    border-radius: 14px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+}
+.demo-frame-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 14px;
+    background: var(--ink-900);
+    border-bottom: 1px solid rgba(220, 172, 71, 0.25);
+}
+.demo-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.demo-dot-red { background: #e0574a; }
+.demo-dot-yellow { background: var(--gold-400); }
+.demo-dot-green { background: #3f8f86; }
+.demo-gif {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 480px;
+    object-fit: cover;
+    background: #fff;
 }
 
 /* ===== الفوتر الموحّد ===== */
