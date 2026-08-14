@@ -2,6 +2,8 @@
 const inputText = document.getElementById('inputText');
 const outputText = document.getElementById('outputText');
 
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 // ===== عناصر الأزرار والنتائج =====
 const copyBtn = document.getElementById('copyBtn');
 const copyImageBtn = document.getElementById('copyImageBtn');
@@ -96,10 +98,19 @@ function addTashkeel(mark) {
     renderOutput(inputText.value);
 }
 
-// ===== تغيير نمط الخط =====
+// ===== تغيير نمط الخط (مع تلاشٍ سلس بدل التبديل الفجائي) =====
 function changeFont() {
-    outputText.style.fontFamily = fontSelect.value;
-    renderOutput(inputText.value);
+    if (prefersReducedMotion) {
+        outputText.style.fontFamily = fontSelect.value;
+        renderOutput(inputText.value);
+        return;
+    }
+    outputText.classList.add('font-fade-out');
+    setTimeout(() => {
+        outputText.style.fontFamily = fontSelect.value;
+        renderOutput(inputText.value);
+        outputText.classList.remove('font-fade-out');
+    }, 180);
 }
 
 // ===== تغيير حجم الخط =====
@@ -961,5 +972,97 @@ exportVectorPngBtn.addEventListener('click', function () {
     });
 });
 
+// ===== حركة رسم شعار الـHero بخط الثلث (SVG stroke-draw) =====
+// يحمّل شكل كلمة "ثلث" الحقيقي من ملف الخط عبر opentype.js (نفس الأسلوب
+// المستخدم بمحرر الفيكتور)، ويرسمه بحركة stroke-dashoffset ثم يملؤه بالذهبي.
+// لو تعذّر تحميل الخط (مثلاً بدون سيرفر محلي)، يظهر نص Thuluth ثابت بدلاً منه.
+async function initHeroCalligraphy() {
+    const svg = document.getElementById('heroDrawSvg');
+    const fallback = document.querySelector('.hero-calligraphy-fallback');
+    if (!svg) return;
+
+    function showFallback() {
+        svg.style.display = 'none';
+        if (fallback) fallback.classList.add('show');
+    }
+
+    try {
+        const font = await loadOpentypeFont('fonts/DTHULUTH-II-1.ttf');
+        const glyphChars = shapeArabicWordToVisualGlyphs('ثلث');
+        const fontSize = 300;
+        const scale = fontSize / font.unitsPerEm;
+        let penX = 0;
+        const commands = [];
+        for (const glyphChar of glyphChars) {
+            const glyph = font.charToGlyph(glyphChar);
+            const path = glyph.getPath(penX, 0, fontSize);
+            commands.push(...path.commands);
+            penX += (glyph.advanceWidth || 0) * scale;
+        }
+        if (!commands.length) {
+            showFallback();
+            return;
+        }
+
+        const vb = vectorViewBox(commands);
+        svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+        const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        pathEl.setAttribute('class', 'hero-draw-path');
+        pathEl.setAttribute('d', commandsToPathData(commands));
+        svg.appendChild(pathEl);
+
+        if (prefersReducedMotion) {
+            pathEl.classList.add('is-inked');
+            return;
+        }
+
+        const length = pathEl.getTotalLength();
+        pathEl.style.strokeDasharray = String(length);
+        pathEl.style.strokeDashoffset = String(length);
+
+        requestAnimationFrame(() => {
+            pathEl.style.transition = 'stroke-dashoffset 2.4s ease';
+            pathEl.style.strokeDashoffset = '0';
+        });
+
+        pathEl.addEventListener('transitionend', function onDrawEnd(e) {
+            if (e.propertyName !== 'stroke-dashoffset') return;
+            pathEl.removeEventListener('transitionend', onDrawEnd);
+            pathEl.style.transition = 'fill 0.6s ease';
+            pathEl.classList.add('is-inked');
+        });
+    } catch (err) {
+        console.warn('تعذّر تحميل رسم الشعار المتحرك، سيظهر نص ثابت بدلاً منه:', err);
+        showFallback();
+    }
+}
+
+// ===== حركة الظهور عند التمرير (Intersection Observer بدون مكتبات خارجية) =====
+function initScrollReveal() {
+    const items = document.querySelectorAll('.reveal');
+    if (!items.length) return;
+
+    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+        items.forEach(el => el.classList.add('is-visible'));
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    items.forEach((el, i) => {
+        el.style.transitionDelay = Math.min(i * 60, 240) + 'ms';
+        observer.observe(el);
+    });
+}
+
 // ===== تهيئة أولية =====
 renderOutput(inputText.value);
+initHeroCalligraphy();
+initScrollReveal();

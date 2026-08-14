@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مكتبة خط الثلث</title>
+    <title>مكتبة خط الثلث | كتابة، تشكيل، واستخراج نص من الصور مجانًا</title>
+    <meta name="description" content="اكتب نصك بخط الثلث العربي، شكّله تشكيلاً كاملاً، استخرج نصوصاً من الصور، حلّل نوع الخط، وصمّم الحروف بحرّية — أدوات مجانية بالكامل وبلا تسجيل.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_AR">
+    <meta property="og:title" content="مكتبة خط الثلث | كتابة، تشكيل، واستخراج نص من الصور مجانًا">
+    <meta property="og:description" content="اكتب نصك بخط الثلث العربي، شكّله تشكيلاً كاملاً، استخرج نصوصاً من الصور، حلّل نوع الخط، وصمّم الحروف بحرّية — أدوات مجانية بالكامل وبلا تسجيل.">
+    <meta property="og:image" content="og-image.svg">
 
     <link rel="stylesheet" href="style.css">
 
@@ -13,16 +20,33 @@
 </head>
 <body>
 
+    <header class="site-header">
+        <div class="site-header-inner">
+            <span class="site-logo">مكتبة خط الثلث</span>
+            <nav class="site-nav" aria-label="روابط الأدوات">
+                <a href="#writer">الكتابة والتشكيل</a>
+                <a href="#ocr">استخراج النص</a>
+                <a href="#font-match">تحليل الخط</a>
+                <a href="calligraphy-composer.html">لوح الخطّاط</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-pattern" aria-hidden="true"></div>
+        <div class="hero-inner">
+            <div class="hero-calligraphy" aria-hidden="true">
+                <svg id="heroDrawSvg" class="hero-draw-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"></svg>
+                <span class="hero-calligraphy-fallback">ثلث</span>
+            </div>
+            <h1>اكتب نصك بخط الثلث، شكّله، واستخرج النصوص من الصور — مجاناً وبلا تسجيل</h1>
+            <p class="subtitle">أربع أدوات في مكان واحد: كتابة وتشكيل بخط الثلث، استخراج نص من صورة، تحليل نوع الخط، ولوح الخطّاط للتركيب الحر.</p>
+        </div>
+    </section>
+
     <div class="container">
-        <h1>مكتبة خط الثلث</h1>
-        <p class="subtitle">اكتب نصك وشاهده بأنماط الخط المختلفة مع التشكيل الكامل</p>
-
-        <p class="page-nav-link">
-            <a href="free-composition.html">🖊️ جرّب لوحة التركيب الحر للحروف (صفحة جديدة) — اسحب الحرف، حطّه وين ما تحب، دوّره، وبدّل شكله بدون تشكيل تلقائي</a>
-        </p>
-
         <!-- مربع الكتابة -->
-        <div class="input-section">
+        <div class="input-section" id="writer">
             <label for="inputText">اكتب نصك هنا:</label>
             <textarea id="inputText">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</textarea>
         </div>
@@ -42,14 +66,38 @@
             <button type="button" onclick="addTashkeel('ـ')">ـ تطويل</button>
         </div>
 
-        <!-- علامات زخرفية (زي علامات الإهمال بالثلث الكلاسيكي) -->
-        <div class="tashkeel-bar">
-            <span class="bar-label">علامات زخرفية تجريبية (قارنها بصورتك المرجعية واختر الأقرب — تُضاف بمكان المؤشر):</span>
-            <button type="button" onclick="addTashkeel('ٔ')">بٔ همزة فوقية</button>
-            <button type="button" onclick="addTashkeel('ٕ')">بٕ همزة تحتية</button>
-            <button type="button" onclick="addTashkeel('ۤ')">بۤ مدة صغيرة</button>
-            <button type="button" onclick="addTashkeel('۟')">ب۟ دائرة صغيرة</button>
-        </div>
+        <!-- علامات زخرفية (زي علامات الإهمال بالثلث الكلاسيكي) - مطوية افتراضياً لتخفيف الشاشة الأولى على الجوال -->
+        <details class="tashkeel-bar">
+            <summary>علامات زخرفية تجريبية (قارنها بصورتك المرجعية واختر الأقرب — تُضاف بمكان المؤشر)</summary>
+            <div class="tashkeel-buttons">
+                <button type="button" onclick="addTashkeel('ٔ')">بٔ همزة فوقية</button>
+                <button type="button" onclick="addTashkeel('ٕ')">بٕ همزة تحتية</button>
+                <button type="button" onclick="addTashkeel('ۤ')">بۤ مدة صغيرة</button>
+                <button type="button" onclick="addTashkeel('۟')">ب۟ دائرة صغيرة</button>
+            </div>
+        </details>
+
+        <section class="tools-section" id="tools">
+            <h2>الأدوات</h2>
+            <div class="tools-grid">
+                <a class="tool-card reveal" href="#writer">
+                    <h3>اكتب وشكّل نصك بخط الثلث</h3>
+                    <p>تشكيل كامل، تبديل بين أنماط خط الثلث المختلفة، ونسخ أو تصدير النتيجة كصورة أو PDF.</p>
+                </a>
+                <a class="tool-card reveal" href="#ocr">
+                    <h3>استخرج نصاً من صورة</h3>
+                    <p>ارفع صورة فيها كتابة عربية واحصل على النص القابل للنسخ منها مباشرة.</p>
+                </a>
+                <a class="tool-card reveal" href="#font-match">
+                    <h3>اكتشف نوع الخط في صورتك</h3>
+                    <p>قارن شكل الحروف بمكتبة الخطوط المتاحة بالموقع واعرف أقرب خط لما تراه.</p>
+                </a>
+                <a class="tool-card reveal" href="calligraphy-composer.html">
+                    <h3>ركّب لوحتك الخاصة بحرية</h3>
+                    <p>امزج حروفاً من عدة خطوط ثلث في لوحة واحدة، أضف تشكيلاً وزخارف، حرّك وكبّر ودوّر بلا قيود تشكيل تلقائي، وصدّر النتيجة كـ SVG أو PNG — في "لوح الخطّاط".</p>
+                </a>
+            </div>
+        </section>
 
         <!-- أدوات التحكم -->
         <div class="controls">
@@ -104,17 +152,17 @@
         </div>
 
         <!-- استخراج نص من صورة -->
-        <div class="ocr-section">
+        <div class="ocr-section" id="ocr">
             <h3 class="ocr-title">استخراج نص من صورة</h3>
             <input type="file" id="imageInput" accept="image/*" class="ocr-input">
-            <img id="imagePreview" class="image-preview" style="display:none;">
+            <img id="imagePreview" class="image-preview" style="display:none;" alt="معاينة الصورة المرفوعة">
             <button id="extractBtn" class="copy-btn">استخراج النص من الصورة</button>
             <div id="ocrStatus" class="ocr-status"></div>
             <textarea id="ocrResult" class="ocr-result" placeholder="سيظهر النص المستخرج هنا..." readonly></textarea>
             <button id="copyOcrBtn" class="copy-btn">نسخ النص المستخرج</button>
 
             <!-- تحليل نوع الخط من نفس الصورة -->
-            <div class="font-match-section">
+            <div class="font-match-section" id="font-match">
                 <h3 class="ocr-title">تحليل نوع الخط</h3>
                 <button id="analyzeFontBtn" class="copy-btn">تحليل نوع الخط من الصورة</button>
                 <div id="fontMatchStatus" class="ocr-status"></div>
@@ -124,7 +172,7 @@
         </div>
 
         <!-- تصميم حر لشكل الحرف (مسار متجهات حقيقي قابل للتعديل) -->
-        <div class="vector-editor-section">
+        <div class="vector-editor-section" id="vector-editor">
             <h3 class="ocr-title">تصميم حر للحروف (تجريبي)</h3>
             <p class="font-match-hint">
                 اختر خط وحرف عربي واحد، وحمّل شكله الحقيقي (مسار Bezier مستخرج فعليًا من ملف الخط) كنقاط تحكم قابلة للسحب.
@@ -165,7 +213,49 @@
                 <button id="exportVectorPngBtn" class="copy-btn" type="button">تصدير صورة</button>
             </div>
         </div>
+
+        <section class="trust-section" id="trust">
+            <h2>لماذا هذه المكتبة؟</h2>
+            <ul class="trust-list">
+                <li>مجانية بالكامل — بدون أي رسوم مخفية أو نسخة مدفوعة</li>
+                <li>بلا تسجيل أو إنشاء حساب — افتح الصفحة وابدأ فوراً</li>
+                <li>بلا حدود استخدام — اكتب واستخرج وحلّل بقدر ما تحتاج</li>
+            </ul>
+        </section>
+
+        <section class="faq-section" id="faq">
+            <h2>الأسئلة الشائعة</h2>
+            <div class="faq-list">
+                <details class="faq-item reveal">
+                    <summary>هل الاستخدام مجاني فعلاً بلا حدود؟</summary>
+                    <p>نعم، كل أدوات الموقع — الكتابة والتشكيل، استخراج النص من الصور، تحليل نوع الخط، وتصميم الحروف الحر — مجانية بالكامل وبلا أي حد لعدد مرات الاستخدام، ولا تحتاج تسجيل أو حساب.</p>
+                </details>
+                <details class="faq-item reveal">
+                    <summary>هل يمكن استخدام المخرجات تجارياً؟</summary>
+                    <p>النص أو الصورة اللي تصدّرها بنفسك من الموقع مخرجاتك الخاصة وتقدر تستخدمها كيف ما تحب. أما ترخيص ملفات الخطوط نفسها فيختلف من خط لآخر: أغلب الخطوط هنا (مثل أميري وعارف رقعة) مرخّصة بـ SIL Open Font License التي تسمح بالاستخدام التجاري بحرية، بينما بعض الخطوط الأخرى مصدرها مواقع خطوط مجانية بشروط أضيق (مثل اشتراط ذكر المصدر). راجع ملف الترخيص داخل مجلد الخط المطلوب بمجلد fonts قبل أي استخدام تجاري لملف الخط نفسه.</p>
+                </details>
+                <details class="faq-item reveal">
+                    <summary>ما دقة استخراج النص من الصور القديمة؟</summary>
+                    <p>الاستخراج يعتمد على وضوح الصورة وتباين الحبر مع الخلفية، ويعطي أفضل نتيجة مع كتابة مطبوعة وواضحة. الصور القديمة أو الباهتة أو منخفضة الدقة، وكذلك الخطوط الزخرفية شديدة التشابك (كالثلث الكلاسيكي المخطوط)، تقلّل دقة الاستخراج بشكل ملحوظ — راجع النص المستخرج وصحّحه يدوياً عند الحاجة.</p>
+                </details>
+                <details class="faq-item reveal">
+                    <summary>ماذا يحدث للصور التي أرفعها؟ تُحفظ أم تُحذف؟</summary>
+                    <p>الصورة لا تُرفع لأي خادم إطلاقاً — كل المعالجة (المعاينة، استخراج النص، وتحليل نوع الخط) تتم داخل متصفحك مباشرة. الصورة لا تُحفظ في أي مكان من طرفنا، وتختفي بمجرد إغلاق الصفحة أو تحديثها أو اختيار صورة جديدة.</p>
+                </details>
+            </div>
+        </section>
     </div>
+
+    <footer class="site-footer">
+        <nav class="footer-nav" aria-label="روابط الموقع">
+            <a href="#writer">الكتابة والتشكيل</a>
+            <a href="#ocr">استخراج النص</a>
+            <a href="#font-match">تحليل الخط</a>
+            <a href="calligraphy-composer.html">لوح الخطّاط</a>
+            <a href="privacy.html">سياسة الخصوصية</a>
+        </nav>
+        <p class="footer-note">مكتبة خط الثلث — أدوات مجانية للخط العربي</p>
+    </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوح الخطّاط — تركيب حر للحروف | مكتبة خط الثلث</title>
+<meta name="description" content="ركّب لوحتك الخاصة من حروف خط الثلث: امزج حروفاً من عدة خطوط، أضف تشكيلاً وزخارف، حرّك وكبّر ودوّر بحرية، وصدّر النتيجة كـ SVG أو PNG — بلا تشكيل تلقائي مفروض.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:title" content="لوح الخطّاط — تركيب حر للحروف | مكتبة خط الثلث">
+<meta property="og:description" content="ركّب لوحتك الخاصة من حروف خط الثلث: امزج حروفاً من عدة خطوط، أضف تشكيلاً وزخارف، حرّك وكبّر ودوّر بحرية، وصدّر النتيجة كـ SVG أو PNG.">
+<meta property="og:image" content="og-image.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/1.3.4/opentype.min.js"></script>
+<style>
+  :root{
+    --wood-dark:#1c130c;
+    --wood:#2c1f15;
+    --wood-light:#4a3623;
+    --paper:#ece0c4;
+    --paper-line:#cdb98a;
+    --ink:#221912;
+    --brass:#c99a44;
+    --brass-bright:#e3b866;
+    --teal:#2f6f68;
+    --teal-bright:#3f8f86;
+    --guide:#e0574a;
+    --text-soft:#d8c9a6;
+    --text-mute:#9c8a68;
+    --danger:#a8452f;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 20% -10%, #3a2a1a 0%, transparent 55%),
+      var(--wood-dark);
+    color:var(--text-soft);
+    font-family:'Cairo', sans-serif;
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+  }
+
+  header{
+    background:linear-gradient(180deg, var(--wood) 0%, var(--wood-dark) 100%);
+    border-bottom:1px solid #000;
+    box-shadow:0 2px 12px rgba(0,0,0,.4);
+    padding:14px 22px;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+    z-index:20;
+  }
+  .brand{display:flex; align-items:baseline; gap:10px; margin-inline-end:auto;}
+  .brand h1{
+    font-family:'Cairo', sans-serif;
+    font-weight:700;
+    font-size:1.7rem;
+    margin:0;
+    color:var(--brass-bright);
+    letter-spacing:.5px;
+  }
+  .brand span{font-size:.78rem; color:var(--text-mute);}
+  .back-link-wood{
+    font-size:.8rem;
+    color:var(--text-mute);
+    text-decoration:none;
+    white-space:nowrap;
+  }
+  .back-link-wood:hover{color:var(--brass-bright);}
+  .toolbar{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .btn{
+    font-family:'Cairo', sans-serif;
+    font-size:.85rem;
+    font-weight:600;
+    padding:9px 16px;
+    border-radius:8px;
+    border:1px solid var(--wood-light);
+    background:var(--wood);
+    color:var(--text-soft);
+    cursor:pointer;
+    transition:.15s;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .btn:hover{background:var(--wood-light); color:#fff;}
+  .btn.primary{background:var(--brass); border-color:var(--brass); color:#241a0c;}
+  .btn.primary:hover{background:var(--brass-bright);}
+  .btn.danger{border-color:#5c2e22;}
+  .btn.danger:hover{background:var(--danger); color:#fff;}
+  .btn:disabled{opacity:.35; cursor:not-allowed;}
+  .btn.toggle.active{background:var(--teal); border-color:var(--teal); color:#fff;}
+  input[type=file]{display:none;}
+  .grid-size-wrap{
+    display:flex; align-items:center; gap:6px;
+    font-size:.78rem; color:var(--text-mute);
+    border:1px solid var(--wood-light); border-radius:8px; padding:5px 10px;
+  }
+  .grid-size-wrap input{width:50px; accent-color:var(--brass);}
+
+  .workspace{
+    flex:1;
+    display:grid;
+    grid-template-columns:230px 1fr 270px;
+    gap:0;
+    min-height:0;
+  }
+  @media (max-width:900px){
+    .workspace{grid-template-columns:1fr; grid-template-rows:auto auto auto;}
+  }
+
+  .palette{
+    background:var(--wood);
+    border-inline-end:1px solid #000;
+    padding:16px 12px;
+    overflow-y:auto;
+  }
+  .palette h2, .props h2{
+    font-family:'Cairo', sans-serif;
+    font-size:1.05rem;
+    color:var(--brass);
+    margin:0 0 12px;
+    padding-bottom:8px;
+    border-bottom:1px solid var(--wood-light);
+  }
+
+  .fonts-list{display:flex; flex-direction:column; gap:6px; margin-bottom:8px;}
+  .font-chip{
+    display:flex; align-items:center; gap:8px;
+    background:var(--wood-dark);
+    border:1.5px solid var(--wood-light);
+    border-radius:8px;
+    padding:7px 9px;
+    cursor:pointer;
+    font-size:.78rem;
+  }
+  .font-chip.active{border-color:var(--brass); background:#241a10;}
+  .font-chip span{flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .font-chip .rm{color:var(--text-mute); cursor:pointer; padding:0 3px;}
+  .font-chip .rm:hover{color:var(--danger);}
+  .add-font-btn{
+    width:100%; text-align:center; margin:6px 0 16px;
+    font-size:.78rem; padding:8px;
+  }
+  .no-fonts-msg{font-size:.75rem; color:var(--text-mute); line-height:1.8; margin-bottom:14px;}
+
+  /* ===== Palette Sections ===== */
+  .palette-section {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--wood-light);
+  }
+  .palette-section:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+  .palette-section h3 {
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.95rem;
+    color: var(--brass);
+    margin: 0 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .palette-section h3::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 18px;
+    border-radius: 2px;
+  }
+  .section-letters h3::before { background: var(--brass); }
+  .section-tashkeel h3::before { background: #d4a373; }
+  .section-decoration h3::before { background: var(--teal-bright); }
+
+  .letter-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:7px;
+  }
+  .letter-btn{
+    aspect-ratio:1;
+    background:var(--wood-dark);
+    border:1px solid var(--wood-light);
+    border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:grab;
+    transition:.12s;
+    padding:4px;
+  }
+  .letter-btn:hover{border-color:var(--brass); background:#241a10;}
+  .letter-btn.disabled{opacity:.25; cursor:not-allowed;}
+  .letter-btn svg{width:100%; height:100%; fill:var(--paper);}
+  .letter-btn:hover svg{fill:var(--brass-bright);}
+
+  /* Tashkeel grid */
+  .tashkeel-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:7px;
+    margin-bottom:6px;
+  }
+  .tashkeel-btn{
+    aspect-ratio:1;
+    background:var(--wood-dark);
+    border:1px solid var(--wood-light);
+    border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:grab;
+    transition:.12s;
+    padding:4px;
+    font-family:'Amiri', serif;
+    font-size:1.6rem;
+    color:var(--brass-bright);
+    line-height:1;
+  }
+  .tashkeel-btn:hover{
+    border-color:var(--brass);
+    background:#241a10;
+    color:#fff;
+    transform:scale(1.08);
+  }
+  .tashkeel-btn:active{transform:scale(0.95);}
+
+  /* Decoration grid */
+  .decoration-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:7px;
+    margin-bottom:6px;
+  }
+  .decoration-btn{
+    aspect-ratio:1;
+    background:var(--wood-dark);
+    border:1px solid var(--wood-light);
+    border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:grab;
+    transition:.12s;
+    padding:4px;
+    font-size:1.5rem;
+    color:var(--teal-bright);
+    line-height:1;
+  }
+  .decoration-btn:hover{
+    border-color:var(--teal-bright);
+    background:#241a10;
+    color:#fff;
+    transform:scale(1.08);
+  }
+  .decoration-btn:active{transform:scale(0.95);}
+
+  .palette-hint{font-size:.72rem; color:var(--text-mute); margin-top:14px; line-height:1.7;}
+
+  .canvas-wrap{
+    position:relative;
+    display:flex; align-items:center; justify-content:center;
+    padding:30px; overflow:auto;
+    background:repeating-linear-gradient(45deg, rgba(0,0,0,.15) 0 2px, transparent 2px 40px);
+  }
+  .tablet{
+    position:relative;
+    width:900px; max-width:100%; height:560px;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255,255,255,.05), transparent 40%),
+      var(--paper);
+    border-radius:6px;
+    box-shadow:
+      0 0 0 10px var(--wood-light), 0 0 0 12px #000,
+      0 25px 50px rgba(0,0,0,.55), inset 0 0 60px rgba(80,55,20,.18);
+    overflow:hidden;
+    touch-action:none;
+    user-select:none;
+  }
+  .tablet::before, .tablet::after{
+    content:""; position:absolute; width:26px; height:26px;
+    border:2px solid var(--brass); border-radius:50%;
+    box-shadow:0 0 0 2px var(--wood-dark);
+  }
+  .tablet::before{top:14px; inset-inline-start:14px;}
+  .tablet::after{bottom:14px; inset-inline-end:14px;}
+  .tablet.show-grid .dot-grid{opacity:1;}
+  .dot-grid{
+    position:absolute; inset:0; opacity:0; pointer-events:none;
+    transition:opacity .15s;
+    background-image:radial-gradient(var(--paper-line) 1px, transparent 1px);
+  }
+  .guideline{position:absolute; inset-inline:0; height:0; border-top:1px dashed var(--paper-line); pointer-events:none;}
+  .empty-state{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center; padding:40px; pointer-events:none;}
+  .empty-state div{max-width:340px;}
+  .empty-state h3{font-family:'Cairo', sans-serif; color:var(--ink); font-size:1.4rem; margin:0 0 8px; opacity:.55;}
+  .empty-state p{color:var(--ink); opacity:.4; font-size:.9rem; line-height:1.8; margin:0;}
+
+  .glyph-obj{position:absolute; cursor:grab;}
+  .glyph-obj.dragging{cursor:grabbing;}
+  .glyph-obj svg{overflow:visible; display:block;}
+  .glyph-obj path{fill:var(--ink);}
+  .glyph-obj.selected path{fill:var(--teal-bright);}
+
+  /* Text-based glyph (for tashkeel/decoration not in font) */
+  .glyph-obj.text-glyph .svg-holder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+  .glyph-obj.text-glyph .svg-holder span {
+    font-family: 'Amiri', serif;
+    font-size: 48px;
+    color: var(--ink);
+    line-height: 1;
+    user-select: none;
+  }
+  .glyph-obj.selected.text-glyph .svg-holder span {
+    color: var(--teal-bright);
+  }
+
+  .box-outline{position:absolute; inset:-6px; border:1.5px dashed var(--teal); border-radius:4px; pointer-events:none; display:none;}
+  .glyph-obj.selected .box-outline{display:block;}
+  .rotate-handle, .scale-handle, .del-handle{display:none;}
+  .glyph-obj.selected .rotate-handle,
+  .glyph-obj.selected .scale-handle,
+  .glyph-obj.selected .del-handle{display:block;}
+  .rotate-handle{
+    position:absolute; top:-34px; left:50%; transform:translateX(-50%);
+    width:20px; height:20px; background:var(--brass);
+    border:2px solid #241a0c; border-radius:50%; cursor:grab;
+    box-shadow:0 2px 6px rgba(0,0,0,.4);
+  }
+  .rotate-handle::after{content:""; position:absolute; top:20px; left:50%; width:1.5px; height:14px; background:var(--brass); transform:translateX(-50%);}
+  .scale-handle{position:absolute; bottom:-8px; inset-inline-end:-8px; width:16px; height:16px; background:var(--teal-bright); border:2px solid #0e2624; border-radius:3px; cursor:nwse-resize;}
+  .del-handle{position:absolute; top:-8px; inset-inline-start:-8px; width:18px; height:18px; background:var(--danger); border:2px solid #2a0f09; border-radius:50%; cursor:pointer; align-items:center; justify-content:center; font-size:11px; color:#fff; line-height:1;}
+
+  .guide-line{position:absolute; background:var(--guide); pointer-events:none; z-index:50; display:none;}
+  .guide-line.v{width:1px; top:0; bottom:0;}
+  .guide-line.h{height:1px; left:0; right:0;}
+
+  .props{background:var(--wood); border-inline-start:1px solid #000; padding:16px 14px; overflow-y:auto;}
+  .props-empty{color:var(--text-mute); font-size:.85rem; line-height:1.9; text-align:center; padding:30px 10px;}
+  .field{margin-bottom:18px;}
+  .field label{display:flex; justify-content:space-between; font-size:.78rem; color:var(--text-mute); margin-bottom:6px;}
+  .field label b{color:var(--brass); font-weight:600;}
+  input[type=range]{width:100%; accent-color:var(--brass);}
+  .row-btns{display:flex; gap:8px;}
+  .row-btns .btn{flex:1; padding:8px; font-size:.78rem;}
+  select.field-select{
+    width:100%; padding:8px; border-radius:7px; background:var(--wood-dark);
+    color:var(--text-soft); border:1px solid var(--wood-light); font-family:'Cairo',sans-serif; font-size:.8rem;
+  }
+  .variants-title{font-size:.82rem; color:var(--text-soft); margin:6px 0 10px;}
+  .variants-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;}
+  .variant-thumb{aspect-ratio:1; background:var(--paper); border:2px solid transparent; border-radius:7px; display:flex; align-items:center; justify-content:center; cursor:pointer; padding:6px;}
+  .variant-thumb.active{border-color:var(--brass);}
+  .variant-thumb svg{width:100%; height:100%; fill:var(--ink);}
+  .no-variants{font-size:.75rem; color:var(--text-mute); line-height:1.8; background:var(--wood-dark); padding:10px; border-radius:7px;}
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <h1>لوح الخطّاط</h1>
+    <span>تركيب حرّ للحروف — بلا تشكيل تلقائي مفروض</span>
+  </div>
+  <a href="index.html" class="back-link-wood">→ الرجوع لمكتبة خط الثلث</a>
+  <div class="toolbar">
+    <button class="btn toggle" id="gridToggle">▦ شبكة</button>
+    <button class="btn toggle active" id="snapToggle">🧲 انجذاب</button>
+    <div class="grid-size-wrap">
+      تباعد
+      <input type="number" id="gridSizeInput" min="10" max="80" value="24">
+    </div>
+    <button class="btn" id="exportSvgBtn" disabled>⬇ SVG</button>
+    <button class="btn" id="exportPngBtn" disabled>⬇ PNG</button>
+    <button class="btn danger" id="clearBtn" disabled>🗑 مسح اللوح</button>
+  </div>
+</header>
+
+<div class="workspace">
+
+  <!-- Fonts + letter palette + tashkeel + decoration -->
+  <aside class="palette">
+    <h2>الخطوط</h2>
+    <div class="fonts-list" id="fontsList"></div>
+    <label class="btn primary add-font-btn" for="fontInput">📂 إضافة ملف خط (TTF/OTF)</label>
+    <input type="file" id="fontInput" accept=".ttf,.otf,.woff,.woff2" multiple>
+    <div class="no-fonts-msg" id="noFontsMsg">لم تُحمَّل أي خطوط بعد. أضف خطاً واحداً على الأقل للبدء — يمكنك إضافة عدة خطوط ومزج حروفها بحرية على نفس اللوح.</div>
+
+    <!-- ===== قسم الحروف ===== -->
+    <div class="palette-section section-letters">
+      <h3>الحروف</h3>
+      <div class="letter-grid" id="letterGrid"></div>
+    </div>
+
+    <!-- ===== قسم التشكيل ===== -->
+    <div class="palette-section section-tashkeel">
+      <h3>التشكيل</h3>
+      <div class="tashkeel-grid" id="tashkeelGrid"></div>
+    </div>
+
+    <!-- ===== قسم الزخرفة ===== -->
+    <div class="palette-section section-decoration">
+      <h3>الزخرفة</h3>
+      <div class="decoration-grid" id="decorationGrid"></div>
+    </div>
+
+    <p class="palette-hint">اضغط على أي حرف أو تشكيل أو زخرفة لإضافته إلى اللوح.</p>
+  </aside>
+
+  <!-- Canvas -->
+  <div class="canvas-wrap">
+    <div class="tablet" id="tablet">
+      <div class="dot-grid" id="dotGrid"></div>
+      <div class="guideline" style="top:33%"></div>
+      <div class="guideline" style="top:50%"></div>
+      <div class="guideline" style="top:67%"></div>
+      <div class="guide-line v" id="guideV"></div>
+      <div class="guide-line h" id="guideH"></div>
+      <div class="empty-state" id="emptyState">
+        <div>
+          <h3>اللوح فارغ</h3>
+          <p>أضف خطاً من الأعلى، ثم اضغط على الحروف أو التشكيل أو الزخرفة من القائمة اليمنى وابدأ بالتركيب الحر لتكوين خطك الخاص.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Properties -->
+  <aside class="props" id="propsPanel">
+    <h2>خصائص الحرف</h2>
+    <div class="props-empty" id="propsEmpty">
+      اختر حرفاً على اللوح لتعديل موضعه ودورانه، أو لاستعراض الأشكال البديلة المتاحة له داخل الخط، أو لتبديل خطه.
+    </div>
+    <div id="propsContent" style="display:none;">
+      <div class="field">
+        <label>الخط المستخدَم لهذا الحرف</label>
+        <select class="field-select" id="fontSwitchSelect"></select>
+      </div>
+      <div class="field">
+        <label>الدوران <b id="rotVal">0°</b></label>
+        <input type="range" id="rotSlider" min="-180" max="180" value="0">
+      </div>
+      <div class="field">
+        <label>الحجم <b id="scaleVal">100%</b></label>
+        <input type="range" id="scaleSlider" min="30" max="250" value="100">
+      </div>
+      <div class="field row-btns">
+        <button class="btn" id="dupBtn">⧉ تكرار</button>
+        <button class="btn danger" id="delBtn">🗑 حذف</button>
+      </div>
+      <div class="field">
+        <div class="variants-title">الأشكال البديلة الموجودة في هذا الخط</div>
+        <div class="variants-grid" id="variantsGrid"></div>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<script>
+(function(){
+
+  const LETTERS = [
+    ['ا','ألف'],['ب','باء'],['ت','تاء'],['ث','ثاء'],['ج','جيم'],['ح','حاء'],
+    ['خ','خاء'],['د','دال'],['ذ','ذال'],['ر','راء'],['ز','زاي'],['س','سين'],
+    ['ش','شين'],['ص','صاد'],['ض','ضاد'],['ط','طاء'],['ظ','ظاء'],['ع','عين'],
+    ['غ','غين'],['ف','فاء'],['ق','قاف'],['ك','كاف'],['ل','لام'],['م','ميم'],
+    ['ن','نون'],['ه','هاء'],['و','واو'],['ي','ياء'],['ء','همزة'],['ة','تاء مربوطة'],['ى','ألف مقصورة']
+  ];
+
+  const TASHKEEL = [
+    ['َ','فتحة'], ['ُ','ضمة'], ['ِ','كسرة'],
+    ['ّ','شدة'], ['ْ','سكون'], ['ً','فتحتان'],
+    ['ٌ','ضمتان'], ['ٍ','كسرتان'], ['ٓ','مد']
+  ];
+
+  const DECORATIONS = [
+    ['۞','نقطة'], ['۩','سجدة'], ['❀','زهرة'], ['◆','معين'],
+    ['✿','وردة'], ['❁','زهرة٢'], ['●','دائرة'], ['■','مربع'],
+    ['▲','مثلث'], ['★','نجمة'], ['♦','معين٢'], ['☆','نجمة فارغة']
+  ];
+
+  const ALT_FEATURES = ['isol','fina','init','medi','salt',
+    'ss01','ss02','ss03','ss04','ss05','ss06','ss07','ss08','ss09','ss10'];
+
+  const LOCAL_FONTS = [
+    { path: 'fonts/alfont_com_AlFont_com_DTHULUTH-II.ttf', label: 'ثلث (AlFont)' },
+    { path: 'fonts/DTHULUTH-II-1.ttf', label: 'ثلث DecoType II (نسخة 1)' },
+    { path: 'fonts/ttf1/amoshref-thulth.ttf', label: 'ثلث أموشرف' },
+    { path: 'fonts/ttf2/decotype-thuluth-ii.ttf', label: 'ثلث DecoType II' },
+    { path: 'fonts/ttf3/GE Thuluth Light/GE Thuluth Light.ttf', label: 'GE Thuluth Light' },
+    { path: 'fonts/ttf4/DecoType Thuluth II Regular/DecoType Thuluth II Regular.ttf', label: 'DecoType Thuluth II Regular' },
+    { path: 'fonts/ttf5/jassmin-typo.ttf', label: 'Jassmin Typo' },
+    { path: 'fonts/ttf6/decotype-thuluth-iii.ttf', label: 'ثلث DecoType III' }
+  ];
+
+  let fonts = {};
+  let activeFontId = null;
+  let fontIdSeq = 1;
+
+  let objects = [];
+  let selectedId = null;
+  let idSeq = 1;
+
+  let gridSize = 24;
+  let snapEnabled = true;
+  let gridVisible = false;
+
+  const el = id => document.getElementById(id);
+  const fontsList     = el('fontsList');
+  const noFontsMsg     = el('noFontsMsg');
+  const letterGrid     = el('letterGrid');
+  const tashkeelGrid   = el('tashkeelGrid');
+  const decorationGrid = el('decorationGrid');
+  const tablet          = el('tablet');
+  const dotGrid          = el('dotGrid');
+  const emptyState      = el('emptyState');
+  const fontInput        = el('fontInput');
+  const exportSvgBtn     = el('exportSvgBtn');
+  const exportPngBtn     = el('exportPngBtn');
+  const clearBtn         = el('clearBtn');
+  const gridToggle       = el('gridToggle');
+  const snapToggle       = el('snapToggle');
+  const gridSizeInput    = el('gridSizeInput');
+  const propsEmpty       = el('propsEmpty');
+  const propsContent     = el('propsContent');
+  const fontSwitchSelect = el('fontSwitchSelect');
+  const rotSlider        = el('rotSlider');
+  const rotVal           = el('rotVal');
+  const scaleSlider      = el('scaleSlider');
+  const scaleVal         = el('scaleVal');
+  const variantsGrid     = el('variantsGrid');
+  const dupBtn           = el('dupBtn');
+  const delBtn           = el('delBtn');
+  const guideV           = el('guideV');
+  const guideH           = el('guideH');
+
+  function coverageIndex(coverage, gid){
+    if(!coverage) return -1;
+    if(coverage.format === 1) return coverage.glyphs.indexOf(gid);
+    if(coverage.format === 2){
+      for(const r of coverage.ranges){
+        if(gid >= r.start && gid <= r.end) return r.index + (gid - r.start);
+      }
+    }
+    return -1;
+  }
+  function lookupsForFeature(font, tag){
+    const gsub = font.tables && font.tables.gsub;
+    if(!gsub) return [];
+    const out = [];
+    (gsub.features||[]).forEach(f=>{
+      if(f.tag === tag){
+        (f.feature.lookupListIndexes||[]).forEach(i=>{
+          const lk = gsub.lookups[i];
+          if(lk) out.push(lk);
+        });
+      }
+    });
+    return out;
+  }
+  function applyLookupToGlyph(lookup, gid){
+    const results = [];
+    if(!lookup.subtables) return results;
+    for(const sub of lookup.subtables){
+      if(lookup.lookupType === 1){
+        const ci = coverageIndex(sub.coverage, gid);
+        if(ci === -1) continue;
+        if(sub.substFormat === 1) results.push(gid + sub.deltaGlyphId);
+        else if(sub.substFormat === 2 && sub.substitute) results.push(sub.substitute[ci]);
+      } else if(lookup.lookupType === 3){
+        const ci = coverageIndex(sub.coverage, gid);
+        if(ci === -1) continue;
+        if(sub.alternateSets && sub.alternateSets[ci]) results.push(...sub.alternateSets[ci]);
+      }
+    }
+    return results;
+  }
+  function getGlyphVariants(font, char){
+    const baseGid = font.charToGlyphIndex(char);
+    const variants = [baseGid];
+    if(baseGid === 0) return variants;
+    if(font.tables && font.tables.gsub){
+      ALT_FEATURES.forEach(tag=>{
+        lookupsForFeature(font, tag).forEach(lk=>{
+          applyLookupToGlyph(lk, baseGid).forEach(g=>{
+            if(g!==undefined && g!==null && !variants.includes(g)) variants.push(g);
+          });
+        });
+      });
+    }
+    return variants;
+  }
+
+  function pathDataForGlyph(font, gid, size){
+    const glyph = font.glyphs.get(gid);
+    const path = glyph.getPath(0, 0, size);
+    const bbox = path.getBoundingBox();
+    const cx = (bbox.x1 + bbox.x2)/2 || 0;
+    const cy = (bbox.y1 + bbox.y2)/2 || 0;
+    return { d: path.toPathData(2), cx, cy,
+             w: (bbox.x2-bbox.x1)||size*0.6, h:(bbox.y2-bbox.y1)||size*0.6 };
+  }
+  function svgFor(font, gid, size, extraClass){
+    const p = pathDataForGlyph(font, gid, size);
+    const pad = size*0.15;
+    const w = p.w + pad*2, h = p.h + pad*2;
+    return '<svg viewBox="' + (-w/2) + ' ' + (-h/2) + ' ' + w + ' ' + h + '" class="' + (extraClass||'') + '">' +
+      '<g transform="translate(' + (-p.cx) + ' ' + (-p.cy) + ')"><path d="' + p.d + '"/></g>' +
+    '</svg>';
+  }
+
+  function buildFontsList(){
+    fontsList.innerHTML = '';
+    const ids = Object.keys(fonts);
+    noFontsMsg.style.display = ids.length ? 'none' : 'block';
+    ids.forEach(id=>{
+      const f = fonts[id];
+      const chip = document.createElement('div');
+      chip.className = 'font-chip' + (id==activeFontId ? ' active' : '');
+      chip.innerHTML = '<span>' + f.name + '</span><span class="rm" title="إزالة الخط">✕</span>';
+      chip.querySelector('span:first-child').addEventListener('click', ()=>{
+        activeFontId = id;
+        buildFontsList();
+        buildPalette();
+        buildTashkeel();
+      });
+      chip.querySelector('.rm').addEventListener('click', (e)=>{
+        e.stopPropagation();
+        delete fonts[id];
+        if(activeFontId===id){
+          const rest = Object.keys(fonts);
+          activeFontId = rest.length ? rest[0] : null;
+        }
+        buildFontsList();
+        buildPalette();
+        buildTashkeel();
+      });
+      fontsList.appendChild(chip);
+    });
+  }
+
+  function buildPalette(){
+    letterGrid.innerHTML = '';
+    const fontObj = activeFontId ? fonts[activeFontId] : null;
+    LETTERS.forEach(([ch,name])=>{
+      const btn = document.createElement('div');
+      btn.className = 'letter-btn';
+      btn.title = name;
+      if(fontObj){
+        const gid = fontObj.font.charToGlyphIndex(ch);
+        if(gid === 0){ btn.classList.add('disabled'); }
+        else{
+          btn.innerHTML = svgFor(fontObj.font, gid, 60);
+          btn.addEventListener('click', ()=> addLetter(ch));
+        }
+      } else {
+        btn.classList.add('disabled');
+      }
+      letterGrid.appendChild(btn);
+    });
+  }
+
+  function buildTashkeel(){
+    tashkeelGrid.innerHTML = '';
+    TASHKEEL.forEach(([ch, name])=>{
+      const btn = document.createElement('div');
+      btn.className = 'tashkeel-btn';
+      btn.title = name;
+      btn.textContent = ch;
+      btn.addEventListener('click', ()=> addTashkeel(ch));
+      tashkeelGrid.appendChild(btn);
+    });
+  }
+
+  function buildDecorations(){
+    decorationGrid.innerHTML = '';
+    DECORATIONS.forEach(([ch, name])=>{
+      const btn = document.createElement('div');
+      btn.className = 'decoration-btn';
+      btn.title = name;
+      btn.textContent = ch;
+      btn.addEventListener('click', ()=> addDecoration(ch));
+      decorationGrid.appendChild(btn);
+    });
+  }
+
+  function addLetter(ch){
+    const fontObj = fonts[activeFontId];
+    if(!fontObj) return;
+    const variants = getGlyphVariants(fontObj.font, ch);
+    const obj = {
+      id: idSeq++, char: ch, fontId: activeFontId,
+      gid: variants[0], variants: variants,
+      x: 420 + (Math.random()*80-40),
+      y: 260 + (Math.random()*80-40),
+      rot: 0, scale: 1,
+      isText: false
+    };
+    objects.push(obj);
+    renderObject(obj);
+    selectObject(obj.id);
+    updateEmptyState();
+    syncToolbarState();
+  }
+
+  function addTashkeel(ch){
+    let foundFontId = null;
+    let gid = 0;
+    if(activeFontId && fonts[activeFontId]) {
+      gid = fonts[activeFontId].font.charToGlyphIndex(ch);
+      if(gid !== 0) foundFontId = activeFontId;
+    }
+    if(!foundFontId) {
+      for(const fid in fonts) {
+        const testGid = fonts[fid].font.charToGlyphIndex(ch);
+        if(testGid !== 0) {
+          gid = testGid;
+          foundFontId = fid;
+          break;
+        }
+      }
+    }
+    const obj = {
+      id: idSeq++, char: ch, fontId: foundFontId || activeFontId || 'f1',
+      gid: gid, variants: [gid],
+      x: 420 + (Math.random()*80-40),
+      y: 260 + (Math.random()*80-40),
+      rot: 0, scale: 1,
+      isText: gid === 0
+    };
+    objects.push(obj);
+    renderObject(obj);
+    selectObject(obj.id);
+    updateEmptyState();
+    syncToolbarState();
+  }
+
+  function addDecoration(ch){
+    const obj = {
+      id: idSeq++, char: ch, fontId: activeFontId || Object.keys(fonts)[0] || 'f1',
+      gid: 0, variants: [0],
+      x: 420 + (Math.random()*80-40),
+      y: 260 + (Math.random()*80-40),
+      rot: 0, scale: 1,
+      isText: true
+    };
+    objects.push(obj);
+    renderObject(obj);
+    selectObject(obj.id);
+    updateEmptyState();
+    syncToolbarState();
+  }
+
+  function renderObject(obj){
+    const fontObj = fonts[obj.fontId];
+    let node = document.getElementById('glyph-'+obj.id);
+    if(!node){
+      node = document.createElement('div');
+      node.className = 'glyph-obj' + (obj.isText ? ' text-glyph' : '');
+      node.id = 'glyph-'+obj.id;
+      node.innerHTML = '<div class="box-outline"></div><div class="del-handle">✕</div><div class="rotate-handle"></div><div class="scale-handle"></div>';
+      const svgHolder = document.createElement('div');
+      svgHolder.className = 'svg-holder';
+      node.insertBefore(svgHolder, node.firstChild);
+      tablet.appendChild(node);
+
+      node.addEventListener('pointerdown', e=>startDrag(e, obj.id));
+      node.querySelector('.rotate-handle').addEventListener('pointerdown', e=>{e.stopPropagation(); startRotate(e, obj.id);});
+      node.querySelector('.scale-handle').addEventListener('pointerdown', e=>{e.stopPropagation(); startScale(e, obj.id);});
+      node.querySelector('.del-handle').addEventListener('pointerdown', e=>{e.stopPropagation();});
+      node.querySelector('.del-handle').addEventListener('click', e=>{e.stopPropagation(); removeObject(obj.id);});
+    }
+    node.classList.toggle('text-glyph', obj.isText);
+    const svgHolder = node.querySelector('.svg-holder');
+
+    if(obj.isText || !fontObj || obj.gid === 0) {
+      svgHolder.innerHTML = '<span>' + obj.char + '</span>';
+      node.style.width = '50px';
+      node.style.height = '50px';
+    } else {
+      const size = 140;
+      svgHolder.innerHTML = svgFor(fontObj.font, obj.gid, size);
+      const svgEl = svgHolder.querySelector('svg');
+      const vb = svgEl.getAttribute('viewBox').split(' ').map(Number);
+      const w = vb[2], h = vb[3];
+      svgEl.style.width = w+'px';
+      svgEl.style.height = h+'px';
+      node.style.width = w+'px';
+      node.style.height = h+'px';
+    }
+
+    const w = parseInt(node.style.width) || 50;
+    const h = parseInt(node.style.height) || 50;
+    node.style.left = (obj.x - w/2) + 'px';
+    node.style.top  = (obj.y - h/2) + 'px';
+    node.style.transform = 'rotate(' + obj.rot + 'deg) scale(' + obj.scale + ')';
+    node.classList.toggle('selected', obj.id === selectedId);
+  }
+
+  function removeObject(id){
+    const node = document.getElementById('glyph-'+id);
+    if(node) node.remove();
+    objects = objects.filter(o=>o.id!==id);
+    if(selectedId===id) selectObject(null);
+    updateEmptyState();
+    syncToolbarState();
+  }
+
+  function updateEmptyState(){ emptyState.style.display = objects.length ? 'none' : 'flex'; }
+  function syncToolbarState(){
+    const has = objects.length>0;
+    exportSvgBtn.disabled = !has;
+    exportPngBtn.disabled = !has;
+    clearBtn.disabled = !has;
+  }
+
+  function selectObject(id){
+    selectedId = id;
+    document.querySelectorAll('.glyph-obj').forEach(n=>n.classList.remove('selected'));
+    if(id!==null){
+      const node = document.getElementById('glyph-'+id);
+      if(node) node.classList.add('selected');
+    }
+    refreshPropsPanel();
+  }
+  function currentObj(){ return objects.find(o=>o.id===selectedId); }
+
+  function refreshPropsPanel(){
+    const obj = currentObj();
+    if(!obj){
+      propsEmpty.style.display='block';
+      propsContent.style.display='none';
+      return;
+    }
+    propsEmpty.style.display='none';
+    propsContent.style.display='block';
+    rotSlider.value = obj.rot;
+    rotVal.textContent = Math.round(obj.rot)+'°';
+    scaleSlider.value = Math.round(obj.scale*100);
+    scaleVal.textContent = Math.round(obj.scale*100)+'%';
+
+    fontSwitchSelect.innerHTML = '';
+    Object.keys(fonts).forEach(id=>{
+      const opt = document.createElement('option');
+      opt.value = id; opt.textContent = fonts[id].name;
+      if(id===obj.fontId) opt.selected = true;
+      fontSwitchSelect.appendChild(opt);
+    });
+
+    renderVariants(obj);
+  }
+
+  function renderVariants(obj){
+    const fontObj = fonts[obj.fontId];
+    variantsGrid.innerHTML = '';
+    if(obj.isText || !fontObj || obj.variants.length <= 1){
+      variantsGrid.innerHTML = '<div class="no-variants">لا توجد أشكال بديلة لهذا العنصر.</div>';
+      return;
+    }
+    obj.variants.forEach(gid=>{
+      const thumb = document.createElement('div');
+      thumb.className = 'variant-thumb' + (gid===obj.gid ? ' active' : '');
+      thumb.innerHTML = svgFor(fontObj.font, gid, 50);
+      thumb.addEventListener('click', ()=>{
+        obj.gid = gid;
+        renderObject(obj);
+        renderVariants(obj);
+      });
+      variantsGrid.appendChild(thumb);
+    });
+  }
+
+  fontSwitchSelect.addEventListener('change', ()=>{
+    const obj = currentObj(); if(!obj) return;
+    const newFontId = fontSwitchSelect.value;
+    const newFontObj = fonts[newFontId];
+
+    if(obj.isText) {
+      obj.fontId = newFontId;
+      renderObject(obj);
+      renderVariants(obj);
+      return;
+    }
+
+    const newGid = newFontObj.font.charToGlyphIndex(obj.char);
+    if(newGid === 0){
+      alert('هذا الحرف غير متوفر في الخط المختار.');
+      fontSwitchSelect.value = obj.fontId;
+      return;
+    }
+    obj.fontId = newFontId;
+    obj.variants = getGlyphVariants(newFontObj.font, obj.char);
+    obj.gid = obj.variants[0];
+    renderObject(obj);
+    renderVariants(obj);
+  });
+
+  let dragState = null;
+
+  function otherObjects(id){ return objects.filter(o=>o.id!==id); }
+
+  function applySnap(obj){
+    guideV.style.display='none';
+    guideH.style.display='none';
+    if(!snapEnabled) return;
+
+    const tRect = tablet.getBoundingClientRect();
+    const centerX = tRect.width/2, centerY = tRect.height/2;
+    const threshold = 6;
+    let snappedX = false, snappedY = false;
+
+    if(Math.abs(obj.x-centerX) < threshold){ obj.x = centerX; showGuide('v', centerX); snappedX = true; }
+    if(Math.abs(obj.y-centerY) < threshold){ obj.y = centerY; showGuide('h', centerY); snappedY = true; }
+
+    if(!snappedX || !snappedY){
+      for(const other of otherObjects(obj.id)){
+        if(!snappedX && Math.abs(obj.x-other.x) < threshold){ obj.x = other.x; showGuide('v', other.x); snappedX = true; }
+        if(!snappedY && Math.abs(obj.y-other.y) < threshold){ obj.y = other.y; showGuide('h', other.y); snappedY = true; }
+        if(snappedX && snappedY) break;
+      }
+    }
+    if(!snappedX) obj.x = Math.round(obj.x/gridSize)*gridSize;
+    if(!snappedY) obj.y = Math.round(obj.y/gridSize)*gridSize;
+  }
+  function showGuide(axis, pos){
+    if(axis==='v'){ guideV.style.display='block'; guideV.style.left=pos+'px'; }
+    else{ guideH.style.display='block'; guideH.style.top=pos+'px'; }
+  }
+  function hideGuides(){ guideV.style.display='none'; guideH.style.display='none'; }
+
+  function startDrag(e, id){
+    if(e.target.closest('.rotate-handle,.scale-handle,.del-handle')) return;
+    e.preventDefault();
+    selectObject(id);
+    const obj = objects.find(o=>o.id===id);
+    dragState = { mode:'move', id, startX:e.clientX, startY:e.clientY, origX:obj.x, origY:obj.y };
+    document.getElementById('glyph-'+id).classList.add('dragging');
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+  }
+  function startRotate(e, id){
+    e.preventDefault();
+    selectObject(id);
+    const obj = objects.find(o=>o.id===id);
+    const node = document.getElementById('glyph-'+id);
+    const rect = node.getBoundingClientRect();
+    const cx = rect.left+rect.width/2, cy = rect.top+rect.height/2;
+    dragState = { mode:'rotate', id, cx, cy, origRot:obj.rot, startAngle:Math.atan2(e.clientY-cy, e.clientX-cx) };
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+  }
+  function startScale(e, id){
+    e.preventDefault();
+    selectObject(id);
+    const obj = objects.find(o=>o.id===id);
+    dragState = { mode:'scale', id, startY:e.clientY, origScale:obj.scale };
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+  }
+
+  function onPointerMove(e){
+    if(!dragState) return;
+    const obj = objects.find(o=>o.id===dragState.id);
+    if(!obj) return;
+    if(dragState.mode==='move'){
+      obj.x = dragState.origX + (e.clientX - dragState.startX);
+      obj.y = dragState.origY + (e.clientY - dragState.startY);
+      applySnap(obj);
+      renderObject(obj);
+    } else if(dragState.mode==='rotate'){
+      const ang = Math.atan2(e.clientY-dragState.cy, e.clientX-dragState.cx);
+      let deltaDeg = (ang - dragState.startAngle) * 180/Math.PI;
+      let newRot = dragState.origRot + deltaDeg;
+      if(snapEnabled){
+        const snapStep = 15;
+        const rounded = Math.round(newRot/snapStep)*snapStep;
+        if(Math.abs(newRot-rounded) < 4) newRot = rounded;
+      }
+      newRot = Math.max(-180, Math.min(180, newRot));
+      obj.rot = newRot;
+      renderObject(obj);
+      if(selectedId===obj.id){ rotSlider.value=obj.rot; rotVal.textContent=Math.round(obj.rot)+'°'; }
+    } else if(dragState.mode==='scale'){
+      const delta = (dragState.startY - e.clientY) / 150;
+      let s = Math.max(0.3, Math.min(2.5, dragState.origScale + delta));
+      obj.scale = s;
+      renderObject(obj);
+      if(selectedId===obj.id){ scaleSlider.value=Math.round(s*100); scaleVal.textContent=Math.round(s*100)+'%'; }
+    }
+  }
+  function onPointerUp(){
+    if(dragState){
+      const node = document.getElementById('glyph-'+dragState.id);
+      if(node) node.classList.remove('dragging');
+    }
+    dragState = null;
+    hideGuides();
+    window.removeEventListener('pointermove', onPointerMove);
+    window.removeEventListener('pointerup', onPointerUp);
+  }
+  tablet.addEventListener('pointerdown', e=>{ if(e.target===tablet || e.target===dotGrid) selectObject(null); });
+
+  gridToggle.addEventListener('click', ()=>{
+    gridVisible = !gridVisible;
+    gridToggle.classList.toggle('active', gridVisible);
+    tablet.classList.toggle('show-grid', gridVisible);
+  });
+  snapToggle.addEventListener('click', ()=>{
+    snapEnabled = !snapEnabled;
+    snapToggle.classList.toggle('active', snapEnabled);
+  });
+  function applyGridSize(){
+    gridSize = Math.max(10, Math.min(80, Number(gridSizeInput.value)||24));
+    dotGrid.style.backgroundSize = gridSize + 'px ' + gridSize + 'px';
+  }
+  gridSizeInput.addEventListener('input', applyGridSize);
+
+  rotSlider.addEventListener('input', ()=>{
+    const obj = currentObj(); if(!obj) return;
+    obj.rot = Number(rotSlider.value);
+    rotVal.textContent = obj.rot+'°';
+    renderObject(obj);
+  });
+  scaleSlider.addEventListener('input', ()=>{
+    const obj = currentObj(); if(!obj) return;
+    obj.scale = Number(scaleSlider.value)/100;
+    scaleVal.textContent = scaleSlider.value+'%';
+    renderObject(obj);
+  });
+  dupBtn.addEventListener('click', ()=>{
+    const obj = currentObj(); if(!obj) return;
+    const clone = Object.assign({}, obj, {id: idSeq++, x: obj.x+30, y: obj.y+30, variants: obj.variants.slice()});
+    objects.push(clone);
+    renderObject(clone);
+    selectObject(clone.id);
+  });
+  delBtn.addEventListener('click', ()=>{ if(selectedId!==null) removeObject(selectedId); });
+  window.addEventListener('keydown', e=>{
+    if((e.key==='Delete'||e.key==='Backspace') && selectedId!==null && document.activeElement.tagName!=='INPUT'){
+      e.preventDefault(); removeObject(selectedId);
+    }
+    if(e.key==='Escape') selectObject(null);
+  });
+
+  fontInput.addEventListener('change', async (e)=>{
+    const files = Array.from(e.target.files||[]);
+    for(const file of files){
+      try{
+        const buffer = await file.arrayBuffer();
+        const parsed = opentype.parse(buffer);
+        const id = 'f'+(fontIdSeq++);
+        const name = (parsed.names.fontFamily && parsed.names.fontFamily.en) || file.name;
+        fonts[id] = { id, name, font: parsed };
+        if(!activeFontId) activeFontId = id;
+      }catch(err){
+        alert('تعذّر قراءة الملف: '+file.name);
+        console.error(err);
+      }
+    }
+    fontInput.value = '';
+    buildFontsList();
+    buildPalette();
+    buildTashkeel();
+  });
+
+  function clearAll(){
+    objects.forEach(o=>{ const n=document.getElementById('glyph-'+o.id); if(n) n.remove(); });
+    objects = [];
+    selectObject(null);
+    updateEmptyState();
+    syncToolbarState();
+  }
+  clearBtn.addEventListener('click', ()=>{ if(objects.length && confirm('مسح كل الحروف من اللوح؟')) clearAll(); });
+
+  function buildExportSVG(){
+    const W = tablet.clientWidth, H = tablet.clientHeight;
+    let inner = '';
+    objects.forEach(obj=>{
+      const fontObj = fonts[obj.fontId];
+      if(!fontObj) return;
+      if(obj.isText) return;
+      const p = pathDataForGlyph(fontObj.font, obj.gid, 140);
+      inner += '<g transform="translate(' + obj.x + ' ' + obj.y + ') rotate(' + obj.rot + ') scale(' + obj.scale + ') translate(' + (-p.cx) + ' ' + (-p.cy) + ')">' +
+        '<path d="' + p.d + '" fill="#221912"/>' +
+      '</g>';
+    });
+    return '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '">' +
+      '<rect width="' + W + '" height="' + H + '" fill="#ece0c4"/>' +
+      inner +
+    '</svg>';
+  }
+  exportSvgBtn.addEventListener('click', ()=>{
+    const blob = new Blob([buildExportSVG()], {type:'image/svg+xml'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'تركيب-الخط.svg'; a.click();
+    URL.revokeObjectURL(url);
+  });
+  exportPngBtn.addEventListener('click', ()=>{
+    const svgBlob = new Blob([buildExportSVG()], {type:'image/svg+xml'});
+    const url = URL.createObjectURL(svgBlob);
+    const img = new Image();
+    img.onload = ()=>{
+      const scaleFactor = 3;
+      const canvas = document.createElement('canvas');
+      canvas.width = tablet.clientWidth*scaleFactor;
+      canvas.height = tablet.clientHeight*scaleFactor;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(scaleFactor, scaleFactor);
+      ctx.drawImage(img,0,0);
+      URL.revokeObjectURL(url);
+      canvas.toBlob(blob=>{
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'تركيب-الخط.png';
+        a.click();
+      });
+    };
+    img.src = url;
+  });
+
+  async function autoLoadLocalFonts(){
+    noFontsMsg.textContent = 'جاري تحميل خطوط المشروع من مجلد fonts/ ...';
+    noFontsMsg.style.display = 'block';
+    let loadedCount = 0, failedCount = 0;
+    for(const entry of LOCAL_FONTS){
+      try{
+        const res = await fetch(encodeURI(entry.path));
+        if(!res.ok) throw new Error('HTTP '+res.status);
+        const buffer = await res.arrayBuffer();
+        const parsed = opentype.parse(buffer);
+        const id = 'f'+(fontIdSeq++);
+        const name = entry.label || (parsed.names.fontFamily && parsed.names.fontFamily.en) || entry.path;
+        fonts[id] = { id, name, font: parsed };
+        if(!activeFontId) activeFontId = id;
+        loadedCount++;
+      }catch(err){
+        failedCount++;
+        console.warn('تعذّر تحميل الخط تلقائياً:', entry.path, err);
+      }
+    }
+    buildFontsList();
+    buildPalette();
+    buildTashkeel();
+    buildDecorations();
+    if(loadedCount===0){
+      noFontsMsg.textContent = 'تعذّر تحميل خطوط المشروع تلقائياً. تأكد أنك تفتح الصفحة عبر Live Server (وليس بفتح الملف مباشرة)، وأن مجلد fonts/ موجود بجانب هذا الملف. يمكنك أيضاً إضافة الخطوط يدوياً بالزر أعلاه.';
+    } else if(failedCount>0){
+      const extra = document.createElement('div');
+      extra.style.cssText = 'font-size:.72rem;color:var(--text-mute);margin-bottom:10px;';
+      extra.textContent = 'تعذّر تحميل ' + failedCount + ' من الخطوط تلقائياً (تحقق من أسمائها أو مساراتها). يمكنك إضافتها يدوياً.';
+      fontsList.parentNode.insertBefore(extra, fontsList.nextSibling);
+    }
+  }
+
+  applyGridSize();
+  buildFontsList();
+  buildPalette();
+  buildTashkeel();
+  buildDecorations();
+  updateEmptyState();
+  syncToolbarState();
+  autoLoadLocalFonts();
+
+})();
+</script>
+</body>
+</html>
